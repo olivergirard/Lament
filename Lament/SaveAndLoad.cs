@@ -12,6 +12,8 @@ namespace Lament
             public int num { get; set; }
         }
 
+        /* Loads the game from the save.json in the AppData/Roaming/Lament folder. */
+
         public static SaveData LoadGame()
         {
             string gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Lament");
@@ -36,6 +38,8 @@ namespace Lament
 
             return saveGameData;
         }
+
+        /* Updates the save.json in the AppData/Roaming/Lament folder. */
 
         public static void SaveGame(SaveData saveFile)
         {

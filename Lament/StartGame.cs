@@ -19,6 +19,7 @@ namespace Lament
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
             save = SaveAndLoad.LoadGame();
         }
 
