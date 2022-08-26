@@ -1,2 +1,4 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
 "C:/Users/azure/source/repos/Lament/Content/font.spritefont","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/font.xnb","FontDescriptionProcessor","SpriteFontContent",2074,2102303,0.3226903
+"C:/Users/azure/source/repos/Lament/Content/kurageTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/kurageTitle.xnb","TextureProcessor","Texture2DContent",8508,8294485,0.333623
+"C:/Users/azure/source/repos/Lament/Content/nadiaTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/nadiaTitle.xnb","TextureProcessor","Texture2DContent",8646,8294485,0.1976642
