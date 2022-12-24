@@ -1,1 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?><SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Profile>Reach</Profile><Platform>DesktopGL</Platform><Config /><SourceFiles><File>C:/Users/azure/source/repos/Lament/Content/font.spritefont</File><File>C:/Users/azure/source/repos/Lament/Content/kurageTitle.png</File><File>C:/Users/azure/source/repos/Lament/Content/nadiaTitle.png</File></SourceFiles><DestFiles><File xsi:nil="true" /><File xsi:nil="true" /><File xsi:nil="true" /></DestFiles></SourceFileCollection>
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/azure/source/repos/Lament/Content/font.spritefont</File>
+    <File>C:/Users/azure/source/repos/Lament/Content/morrisTitle.png</File>
+    <File>C:/Users/azure/source/repos/Lament/Content/pierreTitle.png</File>
+    <File>C:/Users/azure/source/repos/Lament/Content/rubyTitle.png</File>
+    <File>C:/Users/azure/source/repos/Lament/Content/yokoTitle.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Drawing;
 using System.Text.Json;
@@ -10,16 +11,18 @@ namespace Lament
     {
 
         private GraphicsDeviceManager graphics;
+        string gameState;
         SpriteBatch spriteBatch;
-        SpriteFont font;
-        Texture2D titleScreen;
         SaveAndLoad.SaveData save;
+        int random;
+        MouseState mouseState;
 
         public StartGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            gameState = "titleScreen";
 
             save = SaveAndLoad.LoadGame();
         }
@@ -32,10 +35,6 @@ namespace Lament
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            font = Content.Load<SpriteFont>(@"C:\Users\azure\source\repos\Lament\Content\bin\DesktopGL\Content\font");
-
-            titleScreen = Content.Load<Texture2D>(RandomTitleScreen());
         }
 
         protected override void Update(GameTime gameTime)
@@ -43,42 +42,62 @@ namespace Lament
             base.Update(gameTime);
         }
 
+
+        /* Master draw function. */
+
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            string output = "" + save.num;
-            Vector2 fontorigin = font.MeasureString(output) / 2;
-            spriteBatch.Draw(titleScreen, new Vector2(0, 0), Microsoft.Xna.Framework.Color.White);
-            spriteBatch.DrawString(font, output, fontorigin, Microsoft.Xna.Framework.Color.Blue);
+
+            switch (gameState)
+            {
+                case "titleScreen":
+                    DrawTitleScreen();
+                    break;
+            }
+
             spriteBatch.End();
+
+
         }
         protected override void OnExiting(object sender, EventArgs args)
         {
-            (save.num)++;
             SaveAndLoad.SaveGame(save);
             base.OnExiting(sender, args);
         }
 
-        public string RandomTitleScreen()
+        public void DrawTitleScreen()
         {
-            var random = new Random();
-            int titleScreen = random.Next(1, 3);
+
+            if (random == 0)
+            {
+                random = (new Random()).Next(1, save.unlockedCharacters.Length + 1);
+            }
 
             string titleScreenName = "";
 
-            switch (titleScreen)
+            switch (random)
             {
                 case 1:
-                    titleScreenName = "kurageTitle";
+                    titleScreenName = "pierreTitle";
                     break;
                 case 2:
-                    titleScreenName = "nadiaTitle";
+                    titleScreenName = "morrisTitle";
+                    break;
+                case 3:
+                    titleScreenName = "rubyTitle";
+                    break;
+                case 4:
+                    titleScreenName = "yokoTitle";
                     break;
             }
 
-            return titleScreenName;
+
+            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Microsoft.Xna.Framework.Color.White);
+
+
+            //draw buttons next
         }
     }
 }

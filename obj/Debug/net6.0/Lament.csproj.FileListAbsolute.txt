@@ -26,5 +26,7 @@ C:\Users\azure\source\repos\Lament\obj\Debug\net6.0\Lament.pdb
 C:\Users\azure\source\repos\Lament\obj\Debug\net6.0\Lament.genruntimeconfig.cache
 C:\Users\azure\source\repos\Lament\obj\Debug\net6.0\ref\Lament.dll
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\font.xnb
-C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\kurageTitle.xnb
-C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\nadiaTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\morrisTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\pierreTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\rubyTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\yokoTitle.xnb

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
+using static Lament.Gear;
 
 namespace Lament
 {
@@ -10,7 +13,7 @@ namespace Lament
 
         public struct SaveData
         {
-            public int num { get; set; }
+            public string[] unlockedCharacters { get; set; }
             public Gear.Head[] equippedHeads { get; set; }
             public Gear.Body[] equippedBodies { get; set; }
             public Gear.Accessory[] equippedAccessories { get; set; }
@@ -35,7 +38,8 @@ namespace Lament
 
             if (File.Exists(savePath))
             {
-                saveGameData = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath), options);
+                List<string> contents = System.Text.Json.JsonSerializer.Deserialize<List<string>>(File.ReadAllText(savePath), options);
+                saveGameData.unlockedCharacters = contents.ToArray();
             }
             else
             {
@@ -46,12 +50,13 @@ namespace Lament
 
                 Party party = Party.AddToParty(pierre, morris, ruby, yoko);
 
-                saveGameData.num = 0;
-
                 saveGameData.equippedHeads = Gear.EquippedHeads(party);
                 saveGameData.equippedBodies = Gear.EquippedBodies(party);
                 saveGameData.equippedAccessories = Gear.EquippedAccessories(party);
                 saveGameData.equippedWeapons = Gear.EquippedWeapons(party);
+
+                string[] temp = { "Pierre", "Morris", "Ruby", "Yoko"};
+                saveGameData.unlockedCharacters = temp;
             }
 
             return saveGameData;
@@ -61,11 +66,17 @@ namespace Lament
 
         public static void SaveGame(SaveData saveFile)
         {
-            string saveData = JsonSerializer.Serialize(saveFile, options);
+
+            string saveData = System.Text.Json.JsonSerializer.Serialize(saveFile, options);
             string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Lament", "save.json");
             File.WriteAllText(savePath, saveData);
 
-            Gear.WriteGearToJson(savePath, saveFile);
+            //Gear.WriteGearToJson(savePath, saveFile);
+
+            string[] names = JsonConvert.DeserializeObject<string[]>(JsonConvert.SerializeObject(saveFile.unlockedCharacters));
+            string nameData = System.Text.Json.JsonSerializer.Serialize(names, options);
+            File.WriteAllText(savePath, nameData);
+            
         }
 
         /* Makes the save data .json file human-readable. */
