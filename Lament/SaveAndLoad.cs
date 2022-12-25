@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using static Lament.Gear;
 
 namespace Lament
@@ -38,8 +41,10 @@ namespace Lament
 
             if (File.Exists(savePath))
             {
-                List<string> contents = System.Text.Json.JsonSerializer.Deserialize<List<string>>(File.ReadAllText(savePath), options);
-                saveGameData.unlockedCharacters = contents.ToArray();
+
+
+                SaveData data = System.Text.Json.JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath));
+                saveGameData.unlockedCharacters = data.unlockedCharacters;
             }
             else
             {
@@ -70,13 +75,6 @@ namespace Lament
             string saveData = System.Text.Json.JsonSerializer.Serialize(saveFile, options);
             string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Lament", "save.json");
             File.WriteAllText(savePath, saveData);
-
-            //Gear.WriteGearToJson(savePath, saveFile);
-
-            string[] names = JsonConvert.DeserializeObject<string[]>(JsonConvert.SerializeObject(saveFile.unlockedCharacters));
-            string nameData = System.Text.Json.JsonSerializer.Serialize(names, options);
-            File.WriteAllText(savePath, nameData);
-            
         }
 
         /* Makes the save data .json file human-readable. */

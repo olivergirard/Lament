@@ -39,53 +39,6 @@ namespace Lament
             public string info;
         }
 
-        public static void WriteGearToJson(string savePath, SaveData saveData)
-        {
-            SaveAndLoad.SaveData saveGameData = System.Text.Json.JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath), options);
-
-            try
-            {
-                foreach (Head item in saveData.equippedHeads)
-                {
-                    Head head = JsonConvert.DeserializeObject<Head>(JsonConvert.SerializeObject(item));
-                    string headData = System.Text.Json.JsonSerializer.Serialize(head, options);
-                    File.WriteAllText(savePath, headData);
-                }
-
-                foreach (Weapon item in saveData.equippedWeapons)
-                {
-                    Weapon weapon = JsonConvert.DeserializeObject<Weapon>(JsonConvert.SerializeObject(item));
-                    string weaponData = System.Text.Json.JsonSerializer.Serialize(weapon, options);
-                    File.WriteAllText(savePath, weaponData);
-                }
-
-                foreach (Accessory item in saveData.equippedAccessories)
-                {
-                    Accessory accessory = JsonConvert.DeserializeObject<Accessory>(JsonConvert.SerializeObject(item));
-                    string accessoryData = System.Text.Json.JsonSerializer.Serialize(accessory, options);
-                    File.WriteAllText(savePath, accessoryData);
-                }
-
-                foreach (Body item in saveData.equippedBodies)
-                {
-                    Body body = JsonConvert.DeserializeObject<Body>(JsonConvert.SerializeObject(item));
-                    string bodyData = System.Text.Json.JsonSerializer.Serialize(body, options);
-                    File.WriteAllText(savePath, bodyData);
-                }
-
-            } 
-            catch (System.NullReferenceException e)
-            {
-
-            }
-        }
-
-        private static JsonSerializerOptions options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = true,
-        };
-
         public static Head[] EquippedHeads(Party party)
         {
             Head[] equipped = new Head[4];
