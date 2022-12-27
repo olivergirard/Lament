@@ -30,3 +30,4 @@ C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\morrisTitle.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\pierreTitle.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\rubyTitle.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\yokoTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\playButton.xnb

@@ -4,7 +4,6 @@ namespace Lament
 {
     public class Party
     {
-
         public struct Character
         {
             public string name;

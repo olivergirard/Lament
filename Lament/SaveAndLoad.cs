@@ -1,13 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using static Lament.Gear;
 
 namespace Lament
 {
@@ -41,8 +34,6 @@ namespace Lament
 
             if (File.Exists(savePath))
             {
-
-
                 SaveData data = System.Text.Json.JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath));
                 saveGameData.unlockedCharacters = data.unlockedCharacters;
             }

@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Drawing;
-using System.Text.Json;
 
 namespace Lament
 {
@@ -11,15 +9,20 @@ namespace Lament
     {
 
         private GraphicsDeviceManager graphics;
-        string gameState;
+        public static string gameState;
         SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
         int random;
-        MouseState mouseState;
+
+        public static MouseState mouseState;
+        public static MouseState previousMouseState;
 
         public StartGame()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             gameState = "titleScreen";
@@ -39,6 +42,9 @@ namespace Lament
 
         protected override void Update(GameTime gameTime)
         {
+            mouseState = Mouse.GetState();
+            previousMouseState = mouseState;
+
             base.Update(gameTime);
         }
 
@@ -96,8 +102,8 @@ namespace Lament
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Microsoft.Xna.Framework.Color.White);
 
-
-            //draw buttons next
+            ClickableElements.Button playButton = new ClickableElements.Button("play", 768, 720, Content.Load<Texture2D>("playButton"));
+            spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
         }
     }
 }
