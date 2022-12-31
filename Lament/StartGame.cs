@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using System;
 
 namespace Lament
@@ -12,6 +13,7 @@ namespace Lament
         public static string gameState;
         SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
+        
         int random;
 
         public static MouseState mouseState;
@@ -59,7 +61,10 @@ namespace Lament
             switch (gameState)
             {
                 case "titleScreen":
-                    DrawTitleScreen();
+                    DrawTitleScreen(gameTime);
+                    break;
+                case "optionsMenu":
+                    DrawOptionsMenu();
                     break;
             }
 
@@ -73,7 +78,7 @@ namespace Lament
             base.OnExiting(sender, args);
         }
 
-        public void DrawTitleScreen()
+        public void DrawTitleScreen(GameTime gameTime)
         {
 
             if (random == 0)
@@ -99,11 +104,20 @@ namespace Lament
                     break;
             }
 
-
-            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Microsoft.Xna.Framework.Color.White);
+            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Color.White);
 
             ClickableElements.Button playButton = new ClickableElements.Button("play", 768, 720, Content.Load<Texture2D>("playButton"));
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
+            
+            float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 5;
+            spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
+            
+        }
+
+        public void DrawOptionsMenu()
+        {
+
+
         }
     }
 }
