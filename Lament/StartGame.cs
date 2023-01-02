@@ -102,11 +102,14 @@ namespace Lament
                 case 4:
                     titleScreenName = "yokoTitle";
                     break;
+                case 5:
+                    titleScreenName = "monomoTitle";
+                    break;
             }
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Color.White);
 
-            ClickableElements.Button playButton = new ClickableElements.Button("play", 768, 720, Content.Load<Texture2D>("playButton"));
+            ClickableElements.Button playButton = new ClickableElements.Button("play", 180, 90, Content.Load<Texture2D>("playButton"));
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
             
             float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 5;
