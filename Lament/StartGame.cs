@@ -13,6 +13,7 @@ namespace Lament
         public static string gameState;
         SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
+        public Pierre.Sprite pierre;
         
         int random;
 
@@ -58,6 +59,8 @@ namespace Lament
 
             spriteBatch.Begin();
 
+            /* Depending on the state of the game, different functions will be called. */
+
             switch (gameState)
             {
                 case "titleScreen":
@@ -68,9 +71,9 @@ namespace Lament
                     break;
             }
 
+            SpriteMovement.CheckSpriteMovement(pierre);
+
             spriteBatch.End();
-
-
         }
         protected override void OnExiting(object sender, EventArgs args)
         {
