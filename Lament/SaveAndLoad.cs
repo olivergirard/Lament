@@ -51,7 +51,7 @@ namespace Lament
                 saveGameData.equippedAccessories = Gear.EquippedAccessories(party);
                 saveGameData.equippedWeapons = Gear.EquippedWeapons(party);
 
-                string[] temp = { "Pierre", "Morris", "Ruby", "Yoko", "Monomo"};
+                string[] temp = { "Pierre", "Morris", "Ruby", "Yoko"};
                 saveGameData.unlockedCharacters = temp;
             }
 

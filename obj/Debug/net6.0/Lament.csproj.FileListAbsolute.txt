@@ -33,3 +33,4 @@ C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\yokoTitle.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\playButton.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\blackFade.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\monomoTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\pierreCasual.xnb

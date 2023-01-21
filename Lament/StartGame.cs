@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Lament
 {
@@ -11,9 +12,9 @@ namespace Lament
 
         private GraphicsDeviceManager graphics;
         public static string gameState;
-        SpriteBatch spriteBatch;
+        public static SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
-        public Pierre.Sprite pierre;
+        public Sprite.Pierre pierre;
         
         int random;
 
@@ -29,6 +30,10 @@ namespace Lament
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             gameState = "titleScreen";
+
+            //TODO remove this! used for debugging only
+            pierre.onScreen = true;
+            pierre.spriteImage = "pierreCasual";
 
             save = SaveAndLoad.LoadGame();
         }
@@ -71,7 +76,7 @@ namespace Lament
                     break;
             }
 
-            SpriteMovement.CheckSpriteMovement(pierre);
+            CheckSpriteMovement(pierre);
 
             spriteBatch.End();
         }
@@ -115,7 +120,7 @@ namespace Lament
             ClickableElements.Button playButton = new ClickableElements.Button("play", 180, 90, Content.Load<Texture2D>("playButton"));
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
             
-            float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 5;
+            float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
             spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
             
         }
@@ -124,6 +129,34 @@ namespace Lament
         {
 
 
+        }
+
+        //TODO add a running feature based on if another key is pressed too?
+
+        public void CheckSpriteMovement(Sprite.Pierre pierre)
+        {
+            if (pierre.onScreen == true)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    Sprite.Pierre.x -= 5;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    Sprite.Pierre.x += 5;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    Sprite.Pierre.y += 5;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    Sprite.Pierre.y -= 5;
+                }
+
+                spriteBatch.Draw(Content.Load<Texture2D>(pierre.spriteImage), new Vector2(Sprite.Pierre.x, Sprite.Pierre.y), Color.White);
+
+            }
         }
     }
 }

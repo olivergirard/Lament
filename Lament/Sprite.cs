@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace Lament
 {
-    public class Pierre
+    public class Sprite
     {
-        public struct Sprite
+
+        public struct Pierre 
         {
             public bool onScreen { get; set; }
+            public string spriteImage { get; set; }
+            public static int x { get; set; }
+            public static int y { get; set; }
 
         }
+
+
+        
+
+        
+
+        
 
 
 
