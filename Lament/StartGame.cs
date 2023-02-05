@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Lament
 {
@@ -95,6 +96,7 @@ namespace Lament
             }
 
             string titleScreenName = "";
+            Vector2 logoPosition = new Vector2(0, 0);
 
             switch (random)
             {
@@ -112,17 +114,20 @@ namespace Lament
                     break;
                 case 5:
                     titleScreenName = "monomoTitle";
+                    logoPosition = new Vector2(160, 20);
                     break;
             }
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Color.White);
 
-            ClickableElements.Button playButton = new ClickableElements.Button("play", 180, 90, Content.Load<Texture2D>("playButton"));
-            spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
+            //ClickableElements.Button playButton = new ClickableElements.Button("play", 180, 90, Content.Load<Texture2D>("playButton"));
+            //spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
             
             float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
-            spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
             
+            spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
+            spriteBatch.Draw(Content.Load<Texture2D>("logo"), logoPosition, new Rectangle(0, 0, 5760, 3240), Color.White, 0f, new Vector2(0, 0), 0.1f, SpriteEffects.None, 0f);
+
         }
 
         public void DrawOptionsMenu()
