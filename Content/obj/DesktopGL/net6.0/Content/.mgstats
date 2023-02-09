@@ -1,7 +1,7 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
 "C:/Users/azure/source/repos/Lament/Content/blackFade.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/blackFade.xnb","TextureProcessor","Texture2DContent",6159,8294485,0.3194712
 "C:/Users/azure/source/repos/Lament/Content/font.spritefont","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/font.xnb","FontDescriptionProcessor","SpriteFontContent",2074,2102303,0.3226903
-"C:/Users/azure/source/repos/Lament/Content/logo.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/logo.xnb","TextureProcessor","Texture2DContent",5769117,74649685,2.025864
+"C:/Users/azure/source/repos/Lament/Content/logo.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/logo.xnb","TextureProcessor","Texture2DContent",106622,746581,0.1613398
 "C:/Users/azure/source/repos/Lament/Content/monomoTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/monomoTitle.xnb","TextureProcessor","Texture2DContent",70753,8294485,0.3304918
 "C:/Users/azure/source/repos/Lament/Content/morrisTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/morrisTitle.xnb","TextureProcessor","Texture2DContent",8646,8294485,0.3175905
 "C:/Users/azure/source/repos/Lament/Content/pierreCasual.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/pierreCasual.xnb","TextureProcessor","Texture2DContent",2785,109285,0.1523324

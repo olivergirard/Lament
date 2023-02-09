@@ -9,7 +9,7 @@ namespace Lament
         MouseState mouseState;
         MouseState previousMouseState;
         string gameState;
-        public ClickableElements(StartGame game)
+        public ClickableElements()
         {
             mouseState = StartGame.mouseState;
             previousMouseState = StartGame.previousMouseState;

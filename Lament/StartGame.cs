@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
+using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -10,11 +12,11 @@ namespace Lament
 {
     public class StartGame : Game
     {
-
-        private GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         public static string gameState;
         public static SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
+        public static Sprite sprite;
         public Sprite.Pierre pierre;
         
         int random;
@@ -27,10 +29,12 @@ namespace Lament
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             gameState = "titleScreen";
+            sprite = new Sprite(this.Content);
 
             //TODO remove this! used for debugging only
             pierre.onScreen = true;
@@ -77,7 +81,7 @@ namespace Lament
                     break;
             }
 
-            CheckSpriteMovement(pierre);
+            sprite.CheckSpriteMovement(pierre);
 
             spriteBatch.End();
         }
@@ -87,12 +91,14 @@ namespace Lament
             base.OnExiting(sender, args);
         }
 
+        /* Draws the title screen differently depending on a random number generated. */
+
         public void DrawTitleScreen(GameTime gameTime)
         {
-
+            //TODO 1, not 5
             if (random == 0)
             {
-                random = (new Random()).Next(1, save.unlockedCharacters.Length + 1);
+                random = (new Random()).Next(5, save.unlockedCharacters.Length + 1);
             }
 
             string titleScreenName = "";
@@ -119,49 +125,22 @@ namespace Lament
             }
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(Content.Load<Texture2D>("logo"), logoPosition, Color.White);
 
             //ClickableElements.Button playButton = new ClickableElements.Button("play", 180, 90, Content.Load<Texture2D>("playButton"));
             //spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
-            
+
             float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
             
             spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
-            spriteBatch.Draw(Content.Load<Texture2D>("logo"), logoPosition, new Rectangle(0, 0, 5760, 3240), Color.White, 0f, new Vector2(0, 0), 0.1f, SpriteEffects.None, 0f);
-
         }
+
+        /* Draws the options menu available from the title screen and from the game. */
 
         public void DrawOptionsMenu()
         {
 
 
-        }
-
-        //TODO add a running feature based on if another key is pressed too?
-
-        public void CheckSpriteMovement(Sprite.Pierre pierre)
-        {
-            if (pierre.onScreen == true)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    Sprite.Pierre.x -= 5;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    Sprite.Pierre.x += 5;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    Sprite.Pierre.y += 5;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    Sprite.Pierre.y -= 5;
-                }
-
-                spriteBatch.Draw(Content.Load<Texture2D>(pierre.spriteImage), new Vector2(Sprite.Pierre.x, Sprite.Pierre.y), Color.White);
-
-            }
         }
     }
 }
