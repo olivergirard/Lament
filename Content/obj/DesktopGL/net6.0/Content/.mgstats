@@ -8,4 +8,6 @@ Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Siz
 "C:/Users/azure/source/repos/Lament/Content/pierreTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/pierreTitle.xnb","TextureProcessor","Texture2DContent",8508,8294485,0.209344
 "C:/Users/azure/source/repos/Lament/Content/playButton.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/playButton.xnb","TextureProcessor","Texture2DContent",590,232021,0.1297473
 "C:/Users/azure/source/repos/Lament/Content/rubyTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/rubyTitle.xnb","TextureProcessor","Texture2DContent",8508,8294485,0.1535756
+"C:/Users/azure/source/repos/Lament/Content/settingsButton.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/settingsButton.xnb","TextureProcessor","Texture2DContent",519,91289,0.1324618
+"C:/Users/azure/source/repos/Lament/Content/title.mp3","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/title.xnb","SongProcessor","SongContent",1426004,123,1.8075224
 "C:/Users/azure/source/repos/Lament/Content/yokoTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/yokoTitle.xnb","TextureProcessor","Texture2DContent",8644,8294485,0.1504206

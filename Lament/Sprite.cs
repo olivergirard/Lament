@@ -13,22 +13,26 @@ namespace Lament
 {
     public class Sprite
     {
-        ContentManager content;
+        static ContentManager content = StartGame.content;
         public struct Pierre
         {
             public bool onScreen { get; set; }
             public string spriteImage { get; set; }
-            public static int x { get; set; }
-            public static int y { get; set; }
-        }
+            public int x { get; set; }
+            public int y { get; set; }
 
-        public Sprite(ContentManager content) {
-            this.content = content;
+            public Pierre(bool onScreen, string spriteImage, int x, int y)
+            {
+                this.onScreen = onScreen;
+                this.spriteImage = spriteImage;
+                this.x = x;
+                this.y = y;
+            }
         }
 
         /* Checks the movement of the main sprite on screen. */
 
-        public void CheckSpriteMovement(Pierre pierre)
+        public static void CheckSpriteMovement(Pierre pierre)
         {
             int walkSpeed = 5;
             int runSpeed = 10;
@@ -40,19 +44,19 @@ namespace Lament
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.A))
                     {
-                        Sprite.Pierre.x -= runSpeed;
+                        pierre.x -= runSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D))
                     {
-                        Sprite.Pierre.x += runSpeed;
+                        pierre.x += runSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
-                        Sprite.Pierre.y += runSpeed;
+                        pierre.y += runSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.W))
                     {
-                        Sprite.Pierre.y -= runSpeed;
+                        pierre.y -= runSpeed;
                     }
 
                 }
@@ -60,23 +64,23 @@ namespace Lament
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.A))
                     {
-                        Sprite.Pierre.x -= walkSpeed;
+                        pierre.x -= walkSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D))
                     {
-                        Sprite.Pierre.x += walkSpeed;
+                        pierre.x += walkSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
-                        Sprite.Pierre.y += walkSpeed;
+                        pierre.y += walkSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.W))
                     {
-                        Sprite.Pierre.y -= walkSpeed;
+                        pierre.y -= walkSpeed;
                     }
                 }
 
-                StartGame.spriteBatch.Draw(content.Load<Texture2D>(pierre.spriteImage), new Vector2(Pierre.x, Pierre.y), Color.White);
+                StartGame.spriteBatch.Draw(content.Load<Texture2D>(pierre.spriteImage), new Vector2(pierre.x, pierre.y), Color.White);
             }
         }
     }

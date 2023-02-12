@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using System;
 using System.Net.Mime;
@@ -16,8 +17,9 @@ namespace Lament
         public static string gameState;
         public static SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
-        public static Sprite sprite;
-        public Sprite.Pierre pierre;
+        public static Sprite.Pierre pierre;
+        public static Song music;
+        public static ContentManager content;
         
         int random;
 
@@ -34,11 +36,11 @@ namespace Lament
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             gameState = "titleScreen";
-            sprite = new Sprite(this.Content);
+
+            content = Content;
 
             //TODO remove this! used for debugging only
-            pierre.onScreen = true;
-            pierre.spriteImage = "pierreCasual";
+            pierre = new Sprite.Pierre(true, "pierreCasual", 0, 0);
 
             save = SaveAndLoad.LoadGame();
         }
@@ -51,12 +53,19 @@ namespace Lament
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            music = Content.Load<Song>("title");
+            MediaPlayer.Play(music);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            mouseState = Mouse.GetState();
             previousMouseState = mouseState;
+            mouseState = Mouse.GetState();
+
+            foreach (ClickableElements.Button button in ClickableElements.buttonsOnScreen)
+            {
+                ClickableElements.Update(gameTime, button);
+            }
 
             base.Update(gameTime);
         }
@@ -81,7 +90,7 @@ namespace Lament
                     break;
             }
 
-            sprite.CheckSpriteMovement(pierre);
+            Sprite.CheckSpriteMovement(pierre);
 
             spriteBatch.End();
         }
@@ -127,8 +136,12 @@ namespace Lament
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Color.White);
             spriteBatch.Draw(Content.Load<Texture2D>("logo"), logoPosition, Color.White);
 
-            //ClickableElements.Button playButton = new ClickableElements.Button("play", 180, 90, Content.Load<Texture2D>("playButton"));
-            //spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
+            ClickableElements.Button playButton = new ClickableElements.Button("play", 1200, 850, Content.Load<Texture2D>("playButton"), true);
+            ClickableElements.buttonsOnScreen.Add(playButton);
+            spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
+
+            ClickableElements.Button settingsButton = new ClickableElements.Button("settings", 1600, 850, Content.Load<Texture2D>("settingsButton"), true);
+            spriteBatch.Draw(settingsButton.texture, new Vector2(settingsButton.xPosition, settingsButton.yPosition), Color.White);
 
             float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
             

@@ -13,9 +13,13 @@
     <File>C:/Users/azure/source/repos/Lament/Content/pierreTitle.png</File>
     <File>C:/Users/azure/source/repos/Lament/Content/playButton.png</File>
     <File>C:/Users/azure/source/repos/Lament/Content/rubyTitle.png</File>
+    <File>C:/Users/azure/source/repos/Lament/Content/settingsButton.png</File>
+    <File>C:/Users/azure/source/repos/Lament/Content/title.mp3</File>
     <File>C:/Users/azure/source/repos/Lament/Content/yokoTitle.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
