@@ -18,15 +18,15 @@ namespace Lament
         {
             public bool onScreen { get; set; }
             public string spriteImage { get; set; }
-            public int x { get; set; }
-            public int y { get; set; }
+            public static int x { get; set; }
+            public static int y { get; set; }
 
             public Pierre(bool onScreen, string spriteImage, int x, int y)
             {
                 this.onScreen = onScreen;
                 this.spriteImage = spriteImage;
-                this.x = x;
-                this.y = y;
+                Pierre.x = x;
+                Pierre.y = y;
             }
         }
 
@@ -44,19 +44,19 @@ namespace Lament
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.A))
                     {
-                        pierre.x -= runSpeed;
+                        Pierre.x -= runSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D))
                     {
-                        pierre.x += runSpeed;
+                        Pierre.x += runSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
-                        pierre.y += runSpeed;
+                        Pierre.y += runSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.W))
                     {
-                        pierre.y -= runSpeed;
+                        Pierre.y -= runSpeed;
                     }
 
                 }
@@ -64,23 +64,23 @@ namespace Lament
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.A))
                     {
-                        pierre.x -= walkSpeed;
+                        Pierre.x -= walkSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D))
                     {
-                        pierre.x += walkSpeed;
+                        Pierre.x += walkSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
-                        pierre.y += walkSpeed;
+                        Pierre.y += walkSpeed;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.W))
                     {
-                        pierre.y -= walkSpeed;
+                        Pierre.y -= walkSpeed;
                     }
                 }
 
-                StartGame.spriteBatch.Draw(content.Load<Texture2D>(pierre.spriteImage), new Vector2(pierre.x, pierre.y), Color.White);
+                StartGame.spriteBatch.Draw(content.Load<Texture2D>(pierre.spriteImage), new Vector2(Pierre.x, Pierre.y), Color.White);
             }
         }
     }
