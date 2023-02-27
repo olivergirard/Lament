@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
+using MonoGame.Extended.Screens;
 using System;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
@@ -111,7 +112,6 @@ namespace Lament
             }
 
             string titleScreenName = "";
-            Vector2 logoPosition = new Vector2(0, 0);
 
             switch (random)
             {
@@ -129,12 +129,10 @@ namespace Lament
                     break;
                 case 5:
                     titleScreenName = "monomoTitle";
-                    logoPosition = new Vector2(160, 20);
                     break;
             }
 
-            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(Content.Load<Texture2D>("logo"), logoPosition, Color.White);
+            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0);
 
             ClickableElements.Button playButton = new ClickableElements.Button("play", 1200, 850, Content.Load<Texture2D>("playButton"), true);
             ClickableElements.buttonsOnScreen.Add(playButton);
