@@ -53,7 +53,6 @@ namespace Lament
                 switch (gameState)
                 {
                     case "titleScreen":
-
                         TitleScreenButtons(button);
                         break;
                 }
@@ -67,6 +66,9 @@ namespace Lament
             if (button.key == "play")
             {
                 MediaPlayer.Stop();
+            } else if (button.key == "options")
+            {
+                gameState = "optionsMenu";
             }
         }
     }

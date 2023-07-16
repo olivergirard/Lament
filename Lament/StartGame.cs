@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
+using MonoGame.Extended.Collections;
 using MonoGame.Extended.Screens;
 using System;
 using System.Net.Mime;
@@ -54,8 +55,6 @@ namespace Lament
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            music = Content.Load<Song>("title");
-            MediaPlayer.Play(music);
         }
 
         protected override void Update(GameTime gameTime)
@@ -66,6 +65,12 @@ namespace Lament
             foreach (ClickableElements.Button button in ClickableElements.buttonsOnScreen)
             {
                 ClickableElements.Update(gameTime, button);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                //TODO make this the escape menu. gameState = "exit" is only one of the possible cases for the buttons
+                gameState = "exit";
             }
 
             base.Update(gameTime);
@@ -89,6 +94,9 @@ namespace Lament
                 case "optionsMenu":
                     DrawOptionsMenu();
                     break;
+                case "exit":
+                    Exit();
+                    break;
             }
 
             Sprite.CheckSpriteMovement(pierre);
@@ -105,9 +113,10 @@ namespace Lament
 
         public void DrawTitleScreen(GameTime gameTime)
         {
-            //TODO 1, not 5
+            
             if (random == 0)
             {
+                //TODO 1, not 5. this was used for debugging title
                 random = (new Random()).Next(5, save.unlockedCharacters.Length + 1);
             }
 
@@ -129,6 +138,7 @@ namespace Lament
                     break;
                 case 5:
                     titleScreenName = "monomoTitle";
+                    Music("title");
                     break;
             }
 
@@ -138,7 +148,7 @@ namespace Lament
             ClickableElements.buttonsOnScreen.Add(playButton);
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
 
-            ClickableElements.Button settingsButton = new ClickableElements.Button("settings", 1600, 850, Content.Load<Texture2D>("settingsButton"), true);
+            ClickableElements.Button settingsButton = new ClickableElements.Button("options", 1600, 850, Content.Load<Texture2D>("optionsButton"), true);
             spriteBatch.Draw(settingsButton.texture, new Vector2(settingsButton.xPosition, settingsButton.yPosition), Color.White);
 
             float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
@@ -152,6 +162,16 @@ namespace Lament
         {
 
 
+        }
+
+        public void Music(string name)
+        {
+            if (music == null)
+            {
+                music = Content.Load<Song>(name);
+                MediaPlayer.Play(music);
+                MediaPlayer.IsRepeating = true;
+            }
         }
     }
 }
