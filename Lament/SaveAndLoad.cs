@@ -15,6 +15,8 @@ namespace Lament
             public Gear.Accessory[] equippedAccessories { get; set; }
             public Gear.Weapon[] equippedWeapons { get; set; }
 
+            public int volumeState { get; set; }
+
         }
 
         /* Loads the game from the save.json in the AppData/Roaming/Lament folder. */
@@ -34,7 +36,7 @@ namespace Lament
 
             if (File.Exists(savePath))
             {
-                SaveData data = System.Text.Json.JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath));
+                SaveData data = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath));
                 saveGameData.unlockedCharacters = data.unlockedCharacters;
             }
             else
@@ -53,6 +55,7 @@ namespace Lament
 
                 string[] temp = { "Pierre", "Morris", "Ruby", "Yoko"};
                 saveGameData.unlockedCharacters = temp;
+                saveGameData.volumeState = 100;
             }
 
             return saveGameData;

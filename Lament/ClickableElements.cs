@@ -10,8 +10,7 @@ namespace Lament
 {
     public class ClickableElements
     {
-        static string gameState = StartGame.gameState;
-        static ContentManager content = StartGame.content;
+        //StartGame.content exists fyi
         public static ArrayList buttonsOnScreen = new ArrayList();
 
         public struct Button
@@ -50,7 +49,7 @@ namespace Lament
 
             if ((CursorInButton(button) == true) && (StartGame.mouseState.LeftButton == ButtonState.Pressed) && (StartGame.previousMouseState.LeftButton == ButtonState.Released))
             {
-                switch (gameState)
+                switch (StartGame.gameState)
                 {
                     case "titleScreen":
                         TitleScreenButtons(button);
@@ -68,8 +67,13 @@ namespace Lament
                 MediaPlayer.Stop();
             } else if (button.key == "options")
             {
-                gameState = "optionsMenu";
+                StartGame.gameState = "optionsMenu";
             }
+        }
+
+        public static void OptionsMenuButtons(Button button)
+        {
+            
         }
     }
 }

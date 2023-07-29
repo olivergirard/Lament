@@ -39,3 +39,7 @@ C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\settingsButton.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\title.ogg
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\title.xnb
 C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\optionsButton.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\kurageTitle.ogg
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\kurageTitle.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\optionsMenu.xnb
+C:\Users\azure\source\repos\Lament\bin\Debug\net6.0\Content\volumeButtons.xnb

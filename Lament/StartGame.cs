@@ -15,7 +15,7 @@ namespace Lament
 {
     public class StartGame : Game
     {
-        public GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         public static string gameState;
         public static SpriteBatch spriteBatch;
         SaveAndLoad.SaveData save;
@@ -138,18 +138,19 @@ namespace Lament
                     break;
                 case 5:
                     titleScreenName = "monomoTitle";
-                    Music("title");
+                    Music("kurageTitle");
                     break;
             }
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0);
 
             ClickableElements.Button playButton = new ClickableElements.Button("play", 1200, 850, Content.Load<Texture2D>("playButton"), true);
-            ClickableElements.buttonsOnScreen.Add(playButton);
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(playButton);
 
-            ClickableElements.Button settingsButton = new ClickableElements.Button("options", 1600, 850, Content.Load<Texture2D>("optionsButton"), true);
-            spriteBatch.Draw(settingsButton.texture, new Vector2(settingsButton.xPosition, settingsButton.yPosition), Color.White);
+            ClickableElements.Button optionsButton = new ClickableElements.Button("options", 1600, 850, Content.Load<Texture2D>("optionsButton"), true);
+            spriteBatch.Draw(optionsButton.texture, new Vector2(optionsButton.xPosition, optionsButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(optionsButton);
 
             float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
             
@@ -160,8 +161,84 @@ namespace Lament
 
         public void DrawOptionsMenu()
         {
+            Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
+            Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("optionsMenu").Width / 2, Content.Load<Texture2D>("optionsMenu").Height / 2);
+            spriteBatch.Draw(Content.Load<Texture2D>("optionsMenu"), screenCenter, null, Color.White, 0f, textureCenter, 0.80f, SpriteEffects.None, 0);
 
+            /* Volume buttons. */
 
+            if (save.volumeState != 0)
+            {
+                if (save.volumeState >= 10)
+                {
+                    ClickableElements.Button tenPercentVolume = new ClickableElements.Button("10", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(tenPercentVolume.texture, new Vector2(768, 493), new Rectangle(720, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(tenPercentVolume);
+                }
+
+                if (save.volumeState >= 20)
+                {
+                    ClickableElements.Button twentyPercentVolume = new ClickableElements.Button("20", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(twentyPercentVolume.texture, new Vector2(827, 493), new Rectangle(795, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(twentyPercentVolume);
+                }
+
+                if  (save.volumeState >= 30)
+                {
+                    ClickableElements.Button thirtyPercentVolume = new ClickableElements.Button("30", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(thirtyPercentVolume.texture, new Vector2(883, 493), new Rectangle(864, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(thirtyPercentVolume);
+                }
+
+                if (save.volumeState >= 40)
+                {
+                    ClickableElements.Button fortyPercentVolume = new ClickableElements.Button("40", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(fortyPercentVolume.texture, new Vector2(943, 493), new Rectangle(939, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(fortyPercentVolume);
+                }
+
+                if (save.volumeState >= 50)
+                {
+                    ClickableElements.Button fiftyPercentVolume = new ClickableElements.Button("50", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(fiftyPercentVolume.texture, new Vector2(1003, 493), new Rectangle(1015, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(fiftyPercentVolume);
+                }
+
+                if (save.volumeState >= 60)
+                {
+                    ClickableElements.Button sixtyPercentVolume = new ClickableElements.Button("60", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(sixtyPercentVolume.texture, new Vector2(1061, 493), new Rectangle(1086, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(sixtyPercentVolume);
+                }
+
+                if (save.volumeState >= 70)
+                {
+                    ClickableElements.Button seventyPercentVolume = new ClickableElements.Button("70", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(seventyPercentVolume.texture, new Vector2(1120, 493), new Rectangle(1160, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(seventyPercentVolume);
+                }
+
+                if (save.volumeState >= 80)
+                {
+                    ClickableElements.Button eightyPercentVolume = new ClickableElements.Button("80", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(eightyPercentVolume.texture, new Vector2(1184, 493), new Rectangle(1240, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(eightyPercentVolume);
+                }
+
+                if (save.volumeState >= 90)
+                {
+                    ClickableElements.Button ninetyPercentVolume = new ClickableElements.Button("90", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(ninetyPercentVolume.texture, new Vector2(1244, 493), new Rectangle(1315, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(ninetyPercentVolume);
+                }
+
+                if (save.volumeState == 100)
+                {
+                    ClickableElements.Button hundredPercentVolume = new ClickableElements.Button("100", 0, 0, Content.Load<Texture2D>("volumeButtons"), true);
+                    spriteBatch.Draw(hundredPercentVolume.texture, new Vector2(1300, 493), new Rectangle(1385, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
+                    ClickableElements.buttonsOnScreen.Add(hundredPercentVolume);
+                }
+            }
         }
 
         public void Music(string name)

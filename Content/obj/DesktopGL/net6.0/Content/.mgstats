@@ -1,13 +1,16 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
 "C:/Users/azure/source/repos/Lament/Content/blackFade.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/blackFade.xnb","TextureProcessor","Texture2DContent",6159,8294485,0.3194712
 "C:/Users/azure/source/repos/Lament/Content/font.spritefont","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/font.xnb","FontDescriptionProcessor","SpriteFontContent",2074,2102303,0.3226903
+"C:/Users/azure/source/repos/Lament/Content/kurageTitle.mp3","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/kurageTitle.xnb","SongProcessor","SongContent",1779610,129,1.5811576
 "C:/Users/azure/source/repos/Lament/Content/logo.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/logo.xnb","TextureProcessor","Texture2DContent",106622,746581,0.1613398
 "C:/Users/azure/source/repos/Lament/Content/monomoTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/monomoTitle.xnb","TextureProcessor","Texture2DContent",21279283,74649685,2.3323848
 "C:/Users/azure/source/repos/Lament/Content/morrisTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/morrisTitle.xnb","TextureProcessor","Texture2DContent",8646,8294485,0.3175905
 "C:/Users/azure/source/repos/Lament/Content/optionsButton.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/optionsButton.xnb","TextureProcessor","Texture2DContent",519,91289,0.1295001
+"C:/Users/azure/source/repos/Lament/Content/optionsMenu.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/optionsMenu.xnb","TextureProcessor","Texture2DContent",1427891,8294485,0.3699967
 "C:/Users/azure/source/repos/Lament/Content/pierreCasual.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/pierreCasual.xnb","TextureProcessor","Texture2DContent",2785,109285,0.1523324
 "C:/Users/azure/source/repos/Lament/Content/pierreTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/pierreTitle.xnb","TextureProcessor","Texture2DContent",8508,8294485,0.209344
 "C:/Users/azure/source/repos/Lament/Content/playButton.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/playButton.xnb","TextureProcessor","Texture2DContent",590,232021,0.1297473
 "C:/Users/azure/source/repos/Lament/Content/rubyTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/rubyTitle.xnb","TextureProcessor","Texture2DContent",8508,8294485,0.1535756
 "C:/Users/azure/source/repos/Lament/Content/title.mp3","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/title.xnb","SongProcessor","SongContent",1426004,123,1.8075224
+"C:/Users/azure/source/repos/Lament/Content/volumeButtons.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/volumeButtons.xnb","TextureProcessor","Texture2DContent",40015,8294485,0.190866
 "C:/Users/azure/source/repos/Lament/Content/yokoTitle.png","C:/Users/azure/source/repos/Lament/Content/bin/DesktopGL/Content/yokoTitle.xnb","TextureProcessor","Texture2DContent",8644,8294485,0.1504206
