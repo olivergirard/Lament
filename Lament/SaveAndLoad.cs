@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.IO;
 using System.Text.Json;
 
@@ -7,6 +8,7 @@ namespace Lament
     public class SaveAndLoad
     {
 
+        //TODO make sure game always runs at specified volume (right now it only does it if a button is pressed). new function peas
         public struct SaveData
         {
             public string[] unlockedCharacters { get; set; }
@@ -14,8 +16,7 @@ namespace Lament
             public Gear.Body[] equippedBodies { get; set; }
             public Gear.Accessory[] equippedAccessories { get; set; }
             public Gear.Weapon[] equippedWeapons { get; set; }
-
-            public int volumeState { get; set; }
+            public float volumeState { get; set; }
 
         }
 
@@ -38,6 +39,8 @@ namespace Lament
             {
                 SaveData data = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(savePath));
                 saveGameData.unlockedCharacters = data.unlockedCharacters;
+                saveGameData.volumeState = data.volumeState;
+                MediaPlayer.Volume = saveGameData.volumeState;
             }
             else
             {
@@ -55,7 +58,7 @@ namespace Lament
 
                 string[] temp = { "Pierre", "Morris", "Ruby", "Yoko"};
                 saveGameData.unlockedCharacters = temp;
-                saveGameData.volumeState = 100;
+                saveGameData.volumeState = 1.0f;
             }
 
             return saveGameData;
@@ -65,8 +68,7 @@ namespace Lament
 
         public static void SaveGame(SaveData saveFile)
         {
-
-            string saveData = System.Text.Json.JsonSerializer.Serialize(saveFile, options);
+            string saveData = JsonSerializer.Serialize(saveFile, options);
             string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Lament", "save.json");
             File.WriteAllText(savePath, saveData);
         }

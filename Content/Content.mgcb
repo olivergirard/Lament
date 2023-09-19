@@ -50,6 +50,24 @@
 /processorParam:TextureFormat=Color
 /build:logo.png
 
+#begin monomoTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:monomoTheme.mp3
+
+#begin monomoTitle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:monomoTitle.png
+
 #begin monomoTitle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -86,7 +104,7 @@
 /processorParam:TextureFormat=Color
 /build:optionsButton.png
 
-#begin optionsMenu.png
+#begin paused.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -96,7 +114,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:optionsMenu.png
+/build:paused.png
 
 #begin pierreCasual.png
 /importer:TextureImporter
