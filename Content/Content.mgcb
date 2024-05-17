@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:blackFade.png
 
+#begin Blur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Blur.fx
+
 #begin font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -55,18 +61,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:monomoTheme.mp3
-
-#begin monomoTitle.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:monomoTitle.png
 
 #begin monomoTitle.png
 /importer:TextureImporter

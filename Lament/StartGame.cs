@@ -3,13 +3,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended;
-using MonoGame.Extended.Collections;
-using MonoGame.Extended.Screens;
 using System;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 
 namespace Lament
 {
@@ -22,11 +17,14 @@ namespace Lament
         public static Sprite.Pierre pierre;
         public static Song music;
         public static ContentManager content;
+        Effect blur;
         
         int random;
 
         public static MouseState mouseState;
         public static MouseState previousMouseState;
+
+        Texture2D capture = null;
 
         public StartGame()
         {
@@ -41,9 +39,6 @@ namespace Lament
 
             content = Content;
 
-            //TODO remove this! used for debugging only
-            pierre = new Sprite.Pierre(true, "pierreCasual", 0, 0);
-
             save = SaveAndLoad.LoadGame();
         }
 
@@ -55,6 +50,8 @@ namespace Lament
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            blur = Content.Load<Effect>("Blur");
         }
 
         protected override void Update(GameTime gameTime)
@@ -76,12 +73,10 @@ namespace Lament
             base.Update(gameTime);
         }
 
-
         /* Master draw function. */
-
         protected override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp);
 
             /* Depending on the state of the game, different functions will be called. */
 
@@ -91,20 +86,26 @@ namespace Lament
                     DrawTitleScreen(gameTime);
                     break;
                 case "optionsMenu":
-                    //TODO need to draw the screen behind it. mdont make optionsMenu a game state then, make it a kind of flag variable
-                    //DrawTitleScreen(gameTime);
+
+                    if (capture == null)
+                    {
+                        capture = CaptureScreen();
+                    }
+                    spriteBatch.Draw(capture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
                     DrawOptionsMenu();
+
                     break;
                 case "exit":
                     Exit();
                     break;
             }
 
-            Sprite.CheckSpriteMovement(pierre);
+            //Sprite.CheckSpriteMovement(pierre);
 
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
         protected override void OnExiting(object sender, EventArgs args)
         {
             SaveAndLoad.SaveGame(save);
@@ -113,10 +114,8 @@ namespace Lament
         }
 
         /* Draws the title screen differently depending on a random number generated. */
-
         public void DrawTitleScreen(GameTime gameTime)
         {
-            
             if (random == 0)
             {
                 //TODO 1, not 5. this was used for debugging title
@@ -131,13 +130,13 @@ namespace Lament
                     titleScreenName = "pierreTitle";
                     break;
                 case 2:
-                    titleScreenName = "morrisTitle";
+                    titleScreenName = "kurageTitle";
                     break;
                 case 3:
-                    titleScreenName = "rubyTitle";
+                    titleScreenName = "lazareTitle";
                     break;
                 case 4:
-                    titleScreenName = "yokoTitle";
+                    titleScreenName = "kriedenTitle";
                     break;
                 case 5:
                     titleScreenName = "monomoTitle";
@@ -160,92 +159,50 @@ namespace Lament
             spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
         }
 
-        /* Draws the options menu available from the title screen and from the game. */
+        public Texture2D CaptureScreen()
+        {
+            int w = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            int h = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
+            int[] backBuffer = new int[w * h];
+            GraphicsDevice.GetBackBufferData(backBuffer);
+
+            Texture2D sourceTexture = new Texture2D(GraphicsDevice, w, h, false, GraphicsDevice.PresentationParameters.BackBufferFormat);
+            sourceTexture.SetData(backBuffer);
+
+            RenderTarget2D renderTarget1 = new RenderTarget2D(GraphicsDevice, sourceTexture.Width, sourceTexture.Height);
+            RenderTarget2D renderTarget2 = new RenderTarget2D(GraphicsDevice, sourceTexture.Width, sourceTexture.Height);
+
+            GraphicsDevice.SetRenderTarget(renderTarget1);
+            GraphicsDevice.Clear(Color.Transparent);
+
+            blur.Parameters["pixelSize"].SetValue(new Vector2(1.0f / sourceTexture.Width, 0));
+            blur.CurrentTechnique.Passes[0].Apply();
+            spriteBatch.Draw(sourceTexture, Vector2.Zero, Color.White);
+
+            GraphicsDevice.SetRenderTarget(renderTarget2);
+            GraphicsDevice.Clear(Color.Transparent);
+
+            blur.Parameters["pixelSize"].SetValue(new Vector2(0, 1.0f / sourceTexture.Height));
+            blur.CurrentTechnique.Passes[0].Apply();
+            spriteBatch.Draw(renderTarget1, Vector2.Zero, Color.White);
+
+            GraphicsDevice.SetRenderTarget(null);
+
+            Texture2D blurredTexture = new Texture2D(GraphicsDevice, sourceTexture.Width, sourceTexture.Height);
+            Color[] pixels = new Color[sourceTexture.Width * sourceTexture.Height];
+            renderTarget2.GetData(pixels);
+            blurredTexture.SetData(pixels);
+
+            return blurredTexture;
+        }
+
+        /* Draws the options menu available from the title screen and from the game. */
         public void DrawOptionsMenu()
         {
             Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
             Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("paused").Width / 2, Content.Load<Texture2D>("paused").Height / 2);
             spriteBatch.Draw(Content.Load<Texture2D>("paused"), screenCenter, null, Color.White, 0f, textureCenter, 0.8f, SpriteEffects.None, 0);
-
-            /* Volume buttons. */
-
-            //TODO make a mute button :( i forgor
-
-            /*
-            if (MediaPlayer.Volume != 0)
-            {
-                if (MediaPlayer.Volume >= 0.1f)
-                {
-                    ClickableElements.Button tenPercentVolume = new ClickableElements.Button("10", 768, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(tenPercentVolume.texture, new Vector2(768, 493), new Rectangle(720, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(tenPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.2f)
-                {
-                    ClickableElements.Button twentyPercentVolume = new ClickableElements.Button("20", 795, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(twentyPercentVolume.texture, new Vector2(827, 493), new Rectangle(795, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(twentyPercentVolume);
-                }
-
-                if  (MediaPlayer.Volume >= 0.3f)
-                {
-                    ClickableElements.Button thirtyPercentVolume = new ClickableElements.Button("30", 864, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(thirtyPercentVolume.texture, new Vector2(883, 493), new Rectangle(864, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(thirtyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.4f)
-                {
-                    ClickableElements.Button fortyPercentVolume = new ClickableElements.Button("40", 939, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(fortyPercentVolume.texture, new Vector2(943, 493), new Rectangle(939, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(fortyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.5f)
-                {
-                    ClickableElements.Button fiftyPercentVolume = new ClickableElements.Button("50", 1015, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(fiftyPercentVolume.texture, new Vector2(1003, 493), new Rectangle(1015, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(fiftyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.6f)
-                {
-                    ClickableElements.Button sixtyPercentVolume = new ClickableElements.Button("60", 1061, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(sixtyPercentVolume.texture, new Vector2(1061, 493), new Rectangle(1086, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(sixtyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.7f)
-                {
-                    ClickableElements.Button seventyPercentVolume = new ClickableElements.Button("70", 1120, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(seventyPercentVolume.texture, new Vector2(1120, 493), new Rectangle(1160, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(seventyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.8f)
-                {
-                    ClickableElements.Button eightyPercentVolume = new ClickableElements.Button("80", 1184, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(eightyPercentVolume.texture, new Vector2(1184, 493), new Rectangle(1240, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(eightyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume >= 0.9f)
-                {
-                    ClickableElements.Button ninetyPercentVolume = new ClickableElements.Button("90", 1244, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(ninetyPercentVolume.texture, new Vector2(1244, 493), new Rectangle(1315, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(ninetyPercentVolume);
-                }
-
-                if (MediaPlayer.Volume == 1.0f)
-                {
-                    ClickableElements.Button hundredPercentVolume = new ClickableElements.Button("100", 1300, 480, 60, 80, Content.Load<Texture2D>("volumeButtons"), true);
-                    spriteBatch.Draw(hundredPercentVolume.texture, new Vector2(1300, 493), new Rectangle(1385, 480, 75, 130), Color.White, 0f, new Vector2(0, 0), 0.80f, SpriteEffects.None, 0);
-                    ClickableElements.buttonsOnScreen.Add(hundredPercentVolume);
-                }
-            }
-            */
         }
 
         public void Music(string name)

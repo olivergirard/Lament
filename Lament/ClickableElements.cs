@@ -10,7 +10,6 @@ namespace Lament
 {
     public class ClickableElements
     {
-        //StartGame.content exists fyi
         public static ArrayList buttonsOnScreen = new ArrayList();
 
         public struct Button
@@ -50,7 +49,6 @@ namespace Lament
 
         public static void Update(GameTime gameTime, Button button)
         {
-
             if ((CursorInButton(button) == true) && (StartGame.mouseState.LeftButton == ButtonState.Pressed) && (StartGame.previousMouseState.LeftButton == ButtonState.Released))
             {
                 switch (StartGame.gameState)
@@ -66,7 +64,6 @@ namespace Lament
         }
 
         /* Triggers if a button on the title screen was pressed. */
-
         public static void TitleScreenButtons(Button button)
         {
             if (button.key == "play")
@@ -79,7 +76,6 @@ namespace Lament
         }
 
         /* Triggers if a button on the options menu was pressed. */
-
         public static void OptionsMenuButtons(Button button)
         {
             if (button.key == "10")

@@ -7,8 +7,6 @@ namespace Lament
 {
     public class SaveAndLoad
     {
-
-        //TODO make sure game always runs at specified volume (right now it only does it if a button is pressed). new function peas
         public struct SaveData
         {
             public string[] unlockedCharacters { get; set; }
@@ -21,7 +19,6 @@ namespace Lament
         }
 
         /* Loads the game from the save.json in the AppData/Roaming/Lament folder. */
-
         public static SaveData LoadGame()
         {
             string gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Lament");
@@ -30,7 +27,6 @@ namespace Lament
             {
                 Directory.CreateDirectory(gamePath);
             }
-
 
             SaveData saveGameData = new SaveData();
             string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Lament", "save.json");
@@ -44,19 +40,19 @@ namespace Lament
             }
             else
             {
-                Party.Character pierre = Party.InitializePierre();
-                Party.Character morris = Party.InitializeMorris();
-                Party.Character ruby = Party.InitializeRuby();
-                Party.Character yoko = Party.InitializeYoko();
+                Party.Character kurage = Party.InitializeKurage();
+                Party.Character monomo = Party.InitializeMonomo();
+                Party.Character lazare = Party.InitializeLazare();
+                Party.Character krieden = Party.InitializeKrieden();
 
-                Party party = Party.AddToParty(pierre, morris, ruby, yoko);
+                Party party = Party.AddToParty(lazare, kurage, monomo, krieden);
 
                 saveGameData.equippedHeads = Gear.EquippedHeads(party);
                 saveGameData.equippedBodies = Gear.EquippedBodies(party);
                 saveGameData.equippedAccessories = Gear.EquippedAccessories(party);
                 saveGameData.equippedWeapons = Gear.EquippedWeapons(party);
 
-                string[] temp = { "Pierre", "Morris", "Ruby", "Yoko"};
+                string[] temp = { "Lazare", "Kurage", "Monomo", "Krieden"};
                 saveGameData.unlockedCharacters = temp;
                 saveGameData.volumeState = 1.0f;
             }
@@ -65,7 +61,6 @@ namespace Lament
         }
 
         /* Updates the save.json in the AppData/Roaming/Lament folder. */
-
         public static void SaveGame(SaveData saveFile)
         {
             string saveData = JsonSerializer.Serialize(saveFile, options);
@@ -74,7 +69,6 @@ namespace Lament
         }
 
         /* Makes the save data .json file human-readable. */
-
         private static JsonSerializerOptions options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

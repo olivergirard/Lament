@@ -27,28 +27,28 @@ namespace Lament
         {
             var random = new Random();
 
-            if (character.name == "Pierre")
+            if (character.name == "Krieden")
             {
                 for (int i = 0; i < character.level + 2; i++)
                 {
                     character.special += random.Next(0, i);
                 }
 
-            } else if (character.name == "Morris")
+            } else if (character.name == "Monomo")
             {
                 for (int i = 0; i < character.level; i++)
                 {
                     character.special += random.Next(0, i);
                 }
 
-            } else if (character.name == "Ruby")
+            } else if (character.name == "Kurage")
             {
                 for (int i = 0; i < character.level + 3; i++)
                 {
                     character.special += random.Next(0, i);
                 }
 
-            } else if (character.name == "Yoko")
+            } else if (character.name == "Lazare")
             {
                 for (int i = 0; i < character.level + 1; i++)
                 {
@@ -57,165 +57,165 @@ namespace Lament
             }
         }
 
-        public static Character InitializePierre()
+        public static Character InitializeKrieden()
         {
-            Character pierre = new Character();
-            pierre.name = "Pierre";
-            pierre.health = 150;
-            pierre.level = 1;
-            pierre.special = 0;
+            Character krieden = new Character();
+            krieden.name = "Krieden";
+            krieden.health = 150;
+            krieden.level = 1;
+            krieden.special = 0;
 
 
             Gear.Head head = new Gear.Head();
-            head.who = "Pierre";
+            head.who = "Krieden";
             head.name = "";
             head.defense = 0;
             head.info = "";
 
             Gear.Body body = new Gear.Body();
-            body.who = "Pierre";
+            body.who = "Krieden";
             body.name = "";
             body.defense = 0;
             body.info = "";
 
             Gear.Accessory accessory = new Gear.Accessory();
-            accessory.who = "Pierre";
+            accessory.who = "Krieden";
             accessory.name = "";
             accessory.defense = 0;
             accessory.info = "";
 
             Gear.Weapon weapon = new Gear.Weapon();
-            weapon.who = "Pierre";
+            weapon.who = "Krieden";
             weapon.name = "";
             weapon.damage = 0;
             weapon.info = "";
 
-            pierre.head = head;
-            pierre.body = body;
-            pierre.weapon = weapon;
-            pierre.accessory = accessory;
+            krieden.head = head;
+            krieden.body = body;
+            krieden.weapon = weapon;
+            krieden.accessory = accessory;
 
-            return pierre;
+            return krieden;
         }
 
-        public static Character InitializeMorris()
+        public static Character InitializeMonomo()
         {
-            Character morris = new Character();
-            morris.name = "Morris";
-            morris.health = 100;
-            morris.level = 1;
-            morris.special = 0;
+            Character monomo = new Character();
+            monomo.name = "Monomo";
+            monomo.health = 100;
+            monomo.level = 1;
+            monomo.special = 0;
 
             Gear.Head head = new Gear.Head();
-            head.who = "Morris";
+            head.who = "Monomo";
             head.name = "";
             head.defense = 0;
             head.info = "";
 
             Gear.Body body = new Gear.Body();
-            body.who = "Morris";
+            body.who = "Monomo";
             body.name = "";
             body.defense = 0;
             body.info = "";
 
             Gear.Accessory accessory = new Gear.Accessory();
-            accessory.who = "Morris";
+            accessory.who = "Monomo";
             accessory.name = "";
             accessory.defense = 0;
             accessory.info = "";
 
             Gear.Weapon weapon = new Gear.Weapon();
-            weapon.who = "Morris";
+            weapon.who = "Monomo";
             weapon.name = "";
             weapon.damage = 0;
             weapon.info = "";
 
-            morris.head = head;
-            morris.body = body;
-            morris.weapon = weapon;
-            morris.accessory = accessory;
+            monomo.head = head;
+            monomo.body = body;
+            monomo.weapon = weapon;
+            monomo.accessory = accessory;
 
-            return morris;
+            return monomo;
         }
 
-        public static Character InitializeRuby()
+        public static Character InitializeKurage()
         {
-            Character ruby = new Character();
-            ruby.name = "Ruby";
-            ruby.health = 80;
-            ruby.level = 1;
-            ruby.special = 0;
+            Character kurage = new Character();
+            kurage.name = "Kurage";
+            kurage.health = 80;
+            kurage.level = 1;
+            kurage.special = 0;
 
             Gear.Head head = new Gear.Head();
-            head.who = "Ruby";
+            head.who = "Kurage";
             head.name = "";
             head.defense = 0;
             head.info = "";
 
             Gear.Body body = new Gear.Body();
-            body.who = "Ruby";
+            body.who = "Kurage";
             body.name = "";
             body.defense = 0;
             body.info = "";
 
             Gear.Accessory accessory = new Gear.Accessory();
-            accessory.who = "Ruby";
-            accessory.name = "Grandma's Locket";
+            accessory.who = "Kurage";
+            accessory.name = "";
             accessory.defense = 2;
-            accessory.info = "This locket may have no photo inside of it, but it holds lots of memories.";
+            accessory.info = "";
 
             Gear.Weapon weapon = new Gear.Weapon();
-            weapon.who = "Ruby";
+            weapon.who = "Kurage";
             weapon.name = "";
             weapon.damage = 0;
             weapon.info = "";
 
-            ruby.head = head;
-            ruby.body = body;
-            ruby.weapon = weapon;
-            ruby.accessory = accessory;
+            kurage.head = head;
+            kurage.body = body;
+            kurage.weapon = weapon;
+            kurage.accessory = accessory;
 
-            return ruby;
+            return kurage;
         }
 
-        public static Character InitializeYoko()
+        public static Character InitializeLazare()
         {
-            Character yoko = new Character();
-            yoko.name = "Yoko";
-            yoko.health = 120;
-            yoko.level = 1;
-            yoko.special = 0;
+            Character lazare = new Character();
+            lazare.name = "Lazare";
+            lazare.health = 120;
+            lazare.level = 1;
+            lazare.special = 0;
 
             Gear.Head head = new Gear.Head();
-            head.who = "Yoko";
+            head.who = "Lazare";
             head.name = "";
             head.defense = 0;
             head.info = "";
 
             Gear.Body body = new Gear.Body();
-            body.who = "Yoko";
+            body.who = "Lazare";
             body.name = "";
             body.defense = 0;
             body.info = "";
 
             Gear.Accessory accessory = new Gear.Accessory();
-            accessory.who = "Yoko";
+            accessory.who = "Lazare";
             accessory.name = "";
             accessory.defense = 0;
             accessory.info = "";
 
             Gear.Weapon weapon = new Gear.Weapon();
-            weapon.who = "Yoko";
+            weapon.who = "Lazare";
             weapon.name = "";
             weapon.damage = 0;
             weapon.info = "";
 
-            yoko.head = head;
-            yoko.body = body;
-            yoko.weapon = weapon;
-            yoko.accessory = accessory;
+            lazare.head = head;
+            lazare.body = body;
+            lazare.weapon = weapon;
+            lazare.accessory = accessory;
 
-            return yoko;
+            return lazare;
         }
 
         public static Party AddToParty(Character one, Character two, Character three, Character four)
