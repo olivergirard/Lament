@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
-using System.IO;
 
 namespace Lament
 {
@@ -18,6 +17,9 @@ namespace Lament
         public static Song music;
         public static ContentManager content;
         Effect blur;
+
+        float fadeIn = 1;
+        float fadeOut = 0;
         
         int random;
 
@@ -66,8 +68,7 @@ namespace Lament
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                //TODO make this the escape menu. gameState = "exit" is only one of the possible cases for the buttons
-                gameState = "exit";
+                gameState = "pauseMenu";
             }
 
             base.Update(gameTime);
@@ -79,28 +80,47 @@ namespace Lament
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp);
 
             /* Depending on the state of the game, different functions will be called. */
-
             switch (gameState)
             {
                 case "titleScreen":
-                    DrawTitleScreen(gameTime);
+                    DrawTitleScreen();
                     break;
-                case "optionsMenu":
 
+                case "loadMenu":
+                    DrawLoadSelectMenu();
+                    break;
+
+                case "advancedOptionsMenu":
+                    DrawAdvancedOptionsMenu();
+                    break;
+
+                case "galleryMenu":
+                    DrawGalleryMenu();
+                    break;
+
+                case "pauseMenu":
                     if (capture == null)
                     {
                         capture = CaptureScreen();
                     }
                     spriteBatch.Draw(capture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-                    DrawOptionsMenu();
-
+                    DrawPauseMenu();
                     break;
+
+                case "basicOptionsMenu":
+                    if (capture == null)
+                    {
+                        capture = CaptureScreen();
+                    }
+                    spriteBatch.Draw(capture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                    DrawBasicOptionsMenu();
+                    break;
+
+
                 case "exit":
                     Exit();
                     break;
             }
-
-            //Sprite.CheckSpriteMovement(pierre);
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -108,13 +128,13 @@ namespace Lament
 
         protected override void OnExiting(object sender, EventArgs args)
         {
-            SaveAndLoad.SaveGame(save);
+            SaveAndLoad.SaveGame(save); //TODO: Turn this off, the user needs to save, not the computer!
             Exit();
             base.OnExiting(sender, args);
         }
 
         /* Draws the title screen differently depending on a random number generated. */
-        public void DrawTitleScreen(GameTime gameTime)
+        public void DrawTitleScreen()
         {
             if (random == 0)
             {
@@ -146,19 +166,30 @@ namespace Lament
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
 
-            ClickableElements.Button playButton = new ClickableElements.Button("play", 1200, 850, 384, 151, Content.Load<Texture2D>("playButton"), true);
+            ClickableElements.Button newButton = new ClickableElements.Button("new", 1363, 240, 360, 100, Content.Load<Texture2D>("newGame"), true);
+            spriteBatch.Draw(newButton.texture, new Vector2(newButton.xPosition, newButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(newButton);
+
+            ClickableElements.Button playButton = new ClickableElements.Button("load", 1363, 407, 360, 100, Content.Load<Texture2D>("load"), true);
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
             ClickableElements.buttonsOnScreen.Add(playButton);
 
-            ClickableElements.Button optionsButton = new ClickableElements.Button("options", 1600, 850, 151, 151, Content.Load<Texture2D>("optionsButton"), true);
+            ClickableElements.Button galleryButton = new ClickableElements.Button("gallery", 1363, 574, 360, 100, Content.Load<Texture2D>("gallery"), true);
+            spriteBatch.Draw(galleryButton.texture, new Vector2(galleryButton.xPosition, galleryButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(galleryButton);
+
+            ClickableElements.Button optionsButton = new ClickableElements.Button("options", 1363, 741, 360, 100, Content.Load<Texture2D>("settings"), true);
             spriteBatch.Draw(optionsButton.texture, new Vector2(optionsButton.xPosition, optionsButton.yPosition), Color.White);
             ClickableElements.buttonsOnScreen.Add(optionsButton);
 
-            float fade = (3 / (float) gameTime.TotalGameTime.TotalSeconds) / 9;
-            
-            spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fade);
+            if (fadeIn >= 0)
+            {
+                fadeIn -= 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+            }
         }
 
+        /* Captures the last outputted image on the screen and applies a blur effect to it. */
         public Texture2D CaptureScreen()
         {
             int w = GraphicsDevice.PresentationParameters.BackBufferWidth;
@@ -197,14 +228,88 @@ namespace Lament
             return blurredTexture;
         }
 
-        /* Draws the options menu available from the title screen and from the game. */
-        public void DrawOptionsMenu()
+        /* Draws the menu that appears upon hitting the ESC key. */
+        public void DrawPauseMenu()
         {
             Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
-            Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("paused").Width / 2, Content.Load<Texture2D>("paused").Height / 2);
-            spriteBatch.Draw(Content.Load<Texture2D>("paused"), screenCenter, null, Color.White, 0f, textureCenter, 0.8f, SpriteEffects.None, 0);
+            Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("pause").Width / 2, Content.Load<Texture2D>("pause").Height / 2);
+            spriteBatch.Draw(Content.Load<Texture2D>("pause"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
+
+            ClickableElements.Button newButton = new ClickableElements.Button("options", 810, 400, 360, 100, Content.Load<Texture2D>("options"), true);
+            spriteBatch.Draw(newButton.texture, new Vector2(newButton.xPosition, newButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(newButton);
+
+            ClickableElements.Button playButton = new ClickableElements.Button("exit", 810, 567, 360, 100, Content.Load<Texture2D>("exit"), true);
+            spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(playButton);
         }
 
+        /* Draws the basic options menu available from the game. */
+        public void DrawBasicOptionsMenu()
+        {
+            //another screen
+        }
+
+        /* Draws the advanced options meny available from the title screen. */
+        public void DrawAdvancedOptionsMenu()
+        {
+            if (fadeOut <= 1)
+            {
+                fadeOut += 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeOut);
+                fadeIn = 1.0f;
+            }
+            else
+            {
+                Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
+                Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("yokoTitle").Width / 2, Content.Load<Texture2D>("yokoTitle").Height / 2);
+                spriteBatch.Draw(Content.Load<Texture2D>("yokoTitle"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
+
+                fadeIn -= 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+            }
+        }
+
+        /* Draws the menu for viewing the gallery images. */
+        public void DrawGalleryMenu()
+        {
+            if (fadeOut <= 1)
+            {
+                fadeOut += 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeOut);
+                fadeIn = 1.0f;
+            } else
+            {
+                Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
+                Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("morrisTitle").Width / 2, Content.Load<Texture2D>("morrisTitle").Height / 2);
+                spriteBatch.Draw(Content.Load<Texture2D>("morrisTitle"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
+
+                fadeIn -= 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+            }
+        }
+
+        /* Draws the menu that can be used to select a previous save file. */
+        public void DrawLoadSelectMenu()
+        {
+            if (fadeOut <= 1)
+            {
+                fadeOut += 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeOut);
+                fadeIn = 1.0f;
+            }
+            else
+            {
+                Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
+                Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("rubyTitle").Width / 2, Content.Load<Texture2D>("rubyTitle").Height / 2);
+                spriteBatch.Draw(Content.Load<Texture2D>("rubyTitle"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
+
+                fadeIn -= 0.01f;
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+            }
+        }
+
+        /* Controls the music that plays on startup. */
         public void Music(string name)
         {
             if (music == null)

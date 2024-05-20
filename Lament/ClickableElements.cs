@@ -56,8 +56,8 @@ namespace Lament
                     case "titleScreen":
                         TitleScreenButtons(button);
                         break;
-                    case "optionsMenu":
-                        OptionsMenuButtons(button);
+                    case "pauseMenu":
+                        PauseMenuButtons(button);
                         break;
                 }
             }
@@ -66,48 +66,35 @@ namespace Lament
         /* Triggers if a button on the title screen was pressed. */
         public static void TitleScreenButtons(Button button)
         {
-            if (button.key == "play")
+            if (button.key == "new")
             {
+                StartGame.gameState = "newGame";
                 MediaPlayer.Stop();
-            } else if (button.key == "options")
+            } else if (button.key == "load") {
+
+                StartGame.gameState = "loadMenu";
+            }
+            else if (button.key == "gallery")
             {
-                StartGame.gameState = "optionsMenu";
+                StartGame.gameState = "galleryMenu";
+            }
+            else if (button.key == "options") 
+            {
+                StartGame.gameState = "advancedOptionsMenu";
             }
         }
 
         /* Triggers if a button on the options menu was pressed. */
-        public static void OptionsMenuButtons(Button button)
+        public static void PauseMenuButtons(Button button)
         {
-            if (button.key == "10")
+            if (button.key == "basicOptions")
             {
-                MediaPlayer.Volume = 0.1f;
-            } else if (button.key == "20")
+                StartGame.gameState = "basicOptionsMenu";
+                MediaPlayer.Stop();
+            }
+            else if ((button.key == "exit") && (StartGame.gameState != "titleScreen"))
             {
-                MediaPlayer.Volume = 0.2f;
-            } else if (button.key == "30")
-            {
-                MediaPlayer.Volume = 0.3f;
-            } else if (button.key == "40")
-            {
-                MediaPlayer.Volume = 0.4f;
-            } else if (button.key == "50")
-            {
-                MediaPlayer.Volume = 0.5f;
-            } else if (button.key == "60")
-            {
-                MediaPlayer.Volume = 0.6f;
-            } else if (button.key == "70")
-            {
-                MediaPlayer.Volume = 0.7f;
-            } else if (button.key == "80")
-            {
-                MediaPlayer.Volume = 0.8f;
-            } else if (button.key == "90")
-            {
-                MediaPlayer.Volume = 0.9f;
-            } else if (button.key == "100")
-            {
-                MediaPlayer.Volume = 1.0f;
+                StartGame.gameState = "exit";
             }
         }
     }
