@@ -2,9 +2,8 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
-using System;
-using Microsoft.Xna.Framework.Content;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Lament
 {
@@ -22,7 +21,9 @@ namespace Lament
             public Texture2D texture { get; set; }
             public bool onScreen { get; set; }
 
-            public Button(string key, int xPosition, int yPosition, int width, int height, Texture2D texture, bool onScreen)
+            public string menu { get; set; }
+
+            public Button(string key, int xPosition, int yPosition, int width, int height, Texture2D texture, bool onScreen, string menu)
             {
                 this.key = key;
                 this.xPosition = xPosition;
@@ -31,6 +32,7 @@ namespace Lament
                 this.height = height;
                 this.texture = texture;
                 this.onScreen = onScreen;
+                this.menu = menu;
             }
         }
 
@@ -58,6 +60,9 @@ namespace Lament
                         break;
                     case "pauseMenu":
                         PauseMenuButtons(button);
+                        break;
+                    case "basicOptionsMenu":
+                        BasicOptionsMenuButtons(button);
                         break;
                 }
             }
@@ -90,11 +95,35 @@ namespace Lament
             if (button.key == "basicOptions")
             {
                 StartGame.gameState = "basicOptionsMenu";
-                MediaPlayer.Stop();
+                StartGame.capture = null;
             }
-            else if ((button.key == "exit") && (StartGame.gameState != "titleScreen"))
+            else if (button.key == "exit")
             {
                 StartGame.gameState = "exit";
+            }
+        }
+
+        public static void BasicOptionsMenuButtons(Button button)
+        {
+            if (button.key == "windowToggle")
+            {
+                StartGame.graphics.IsFullScreen = true;
+                StartGame.graphics.ToggleFullScreen();
+
+            } else if (button.key == "fullscreenToggle") {
+                StartGame.graphics.IsFullScreen = false;
+                StartGame.graphics.ToggleFullScreen();
+            }
+        }
+
+        public static void RemoveFromMenu(string menu)
+        {
+            foreach (Button button in buttonsOnScreen)
+            {
+                if (button.menu == menu)
+                {
+                    buttonsOnScreen.Remove(button);
+                }
             }
         }
     }

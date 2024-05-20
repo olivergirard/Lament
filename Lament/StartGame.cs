@@ -26,7 +26,7 @@ namespace Lament
         public static MouseState mouseState;
         public static MouseState previousMouseState;
 
-        Texture2D capture = null;
+        public static Texture2D capture = null;
 
         public StartGame()
         {
@@ -53,7 +53,7 @@ namespace Lament
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            blur = Content.Load<Effect>("Blur");
+            blur = Content.Load<Effect>("blur");
         }
 
         protected override void Update(GameTime gameTime)
@@ -116,7 +116,6 @@ namespace Lament
                     DrawBasicOptionsMenu();
                     break;
 
-
                 case "exit":
                     Exit();
                     break;
@@ -166,19 +165,19 @@ namespace Lament
 
             spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
 
-            ClickableElements.Button newButton = new ClickableElements.Button("new", 1363, 240, 360, 100, Content.Load<Texture2D>("newGame"), true);
+            ClickableElements.Button newButton = new ClickableElements.Button("new", 1363, 240, 360, 100, Content.Load<Texture2D>("newGame"), true, "titleMenu");
             spriteBatch.Draw(newButton.texture, new Vector2(newButton.xPosition, newButton.yPosition), Color.White);
             ClickableElements.buttonsOnScreen.Add(newButton);
 
-            ClickableElements.Button playButton = new ClickableElements.Button("load", 1363, 407, 360, 100, Content.Load<Texture2D>("load"), true);
+            ClickableElements.Button playButton = new ClickableElements.Button("load", 1363, 407, 360, 100, Content.Load<Texture2D>("load"), true, "titleMenu");
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
             ClickableElements.buttonsOnScreen.Add(playButton);
 
-            ClickableElements.Button galleryButton = new ClickableElements.Button("gallery", 1363, 574, 360, 100, Content.Load<Texture2D>("gallery"), true);
+            ClickableElements.Button galleryButton = new ClickableElements.Button("gallery", 1363, 574, 360, 100, Content.Load<Texture2D>("gallery"), true, "titleMenu");
             spriteBatch.Draw(galleryButton.texture, new Vector2(galleryButton.xPosition, galleryButton.yPosition), Color.White);
             ClickableElements.buttonsOnScreen.Add(galleryButton);
 
-            ClickableElements.Button optionsButton = new ClickableElements.Button("options", 1363, 741, 360, 100, Content.Load<Texture2D>("settings"), true);
+            ClickableElements.Button optionsButton = new ClickableElements.Button("options", 1363, 741, 360, 100, Content.Load<Texture2D>("settings"), true, "titleMenu");
             spriteBatch.Draw(optionsButton.texture, new Vector2(optionsButton.xPosition, optionsButton.yPosition), Color.White);
             ClickableElements.buttonsOnScreen.Add(optionsButton);
 
@@ -235,19 +234,41 @@ namespace Lament
             Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("pause").Width / 2, Content.Load<Texture2D>("pause").Height / 2);
             spriteBatch.Draw(Content.Load<Texture2D>("pause"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
 
-            ClickableElements.Button newButton = new ClickableElements.Button("options", 810, 400, 360, 100, Content.Load<Texture2D>("options"), true);
-            spriteBatch.Draw(newButton.texture, new Vector2(newButton.xPosition, newButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(newButton);
+            ClickableElements.Button basicOptionsButton = new ClickableElements.Button("basicOptions", 810, 400, 360, 100, Content.Load<Texture2D>("options"), true, "pauseMenu");
+            spriteBatch.Draw(basicOptionsButton.texture, new Vector2(basicOptionsButton.xPosition, basicOptionsButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(basicOptionsButton);
 
-            ClickableElements.Button playButton = new ClickableElements.Button("exit", 810, 567, 360, 100, Content.Load<Texture2D>("exit"), true);
-            spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(playButton);
+            ClickableElements.Button exitButton = new ClickableElements.Button("exit", 810, 567, 360, 100, Content.Load<Texture2D>("exit"), true, "pauseMenu");
+            spriteBatch.Draw(exitButton.texture, new Vector2(exitButton.xPosition, exitButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(exitButton);
         }
 
         /* Draws the basic options menu available from the game. */
         public void DrawBasicOptionsMenu()
         {
-            //another screen
+            ClickableElements.RemoveFromMenu("titleScreen");
+
+            Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
+            Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("basicOptions").Width / 2, Content.Load<Texture2D>("basicOptions").Height / 2);
+            spriteBatch.Draw(Content.Load<Texture2D>("basicOptions"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
+
+            ClickableElements.Button fullscreenButton = new ClickableElements.Button("fullscreenToggle", 216, 238, 151, 134, Content.Load<Texture2D>("toggle"), true, "basicOptionsMenu");
+            spriteBatch.Draw(fullscreenButton.texture, new Vector2(fullscreenButton.xPosition, fullscreenButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(fullscreenButton);
+
+            ClickableElements.Button windowButton = new ClickableElements.Button("windowToggle", 586, 238, 151, 134, Content.Load<Texture2D>("toggle"), true, "basicOptionsMenu");
+            spriteBatch.Draw(windowButton.texture, new Vector2(windowButton.xPosition, windowButton.yPosition), Color.White);
+            ClickableElements.buttonsOnScreen.Add(windowButton);
+
+            if (graphics.IsFullScreen == true)
+            {
+                spriteBatch.Draw(Content.Load<Texture2D>("windowMolby"), new Vector2(216, 188), null, Color.White);
+
+            } else
+            {
+                spriteBatch.Draw(Content.Load<Texture2D>("windowMolby"), new Vector2(586, 188), null, Color.White);
+            }
+
         }
 
         /* Draws the advanced options meny available from the title screen. */
