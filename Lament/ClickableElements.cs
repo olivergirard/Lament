@@ -74,7 +74,6 @@ namespace Lament
             if (button.key == "new")
             {
                 StartGame.gameState = "newGame";
-                MediaPlayer.Stop();
             } else if (button.key == "load") {
 
                 StartGame.gameState = "loadMenu";

@@ -16,6 +16,7 @@ namespace Lament
         public static Sprite.Pierre pierre;
         public static Song music;
         public static ContentManager content;
+
         Effect blur;
 
         float fadeIn = 1;
@@ -118,6 +119,10 @@ namespace Lament
 
                 case "exit":
                     Exit();
+                    break;
+
+                case "newGame":
+                    Dialogue.DisplayLine(1);
                     break;
             }
 

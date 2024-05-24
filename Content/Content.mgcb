@@ -43,6 +43,9 @@
 /processorParam:DebugMode=Auto
 /build:Blur.fx;blur.fx
 
+#begin dialogue.json
+/copy:dialogue.json
+
 #begin exit.png
 /importer:TextureImporter
 /processor:TextureProcessor
