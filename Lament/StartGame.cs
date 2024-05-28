@@ -12,16 +12,15 @@ namespace Lament
         public static GraphicsDeviceManager graphics;
         public static string gameState;
         public static SpriteBatch spriteBatch;
-        public static SaveAndLoad.SaveData save;
-        public static Sprite.Pierre pierre;
-        public static Song music;
+        public static SpriteFont spriteFont;
         public static ContentManager content;
-
+        public static Song music;
         Effect blur;
+
+        public static SaveAndLoad.SaveData save;
 
         float fadeIn = 1;
         float fadeOut = 0;
-        
         int random;
 
         public static MouseState mouseState;
@@ -29,6 +28,7 @@ namespace Lament
 
         public static Texture2D capture = null;
 
+        /* Runs at execution. */
         public StartGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -53,16 +53,17 @@ namespace Lament
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             blur = Content.Load<Effect>("blur");
+            spriteFont = Content.Load<SpriteFont>("babydoll");
         }
 
+        /* Updates the game when prompted, changing the display. */
         protected override void Update(GameTime gameTime)
         {
             previousMouseState = mouseState;
             mouseState = Mouse.GetState();
 
-            foreach (ClickableElements.Button button in ClickableElements.buttonsOnScreen)
+            foreach (ClickableElements.Button button in ClickableElements.buttonsOnScreen.ToArray())
             {
                 ClickableElements.Update(gameTime, button);
             }
@@ -122,7 +123,7 @@ namespace Lament
                     break;
 
                 case "newGame":
-                    Dialogue.DisplayLine(1);
+                    VisualNovel.BeginAt(0);
                     break;
             }
 
@@ -172,19 +173,19 @@ namespace Lament
 
             ClickableElements.Button newButton = new ClickableElements.Button("new", 1363, 240, 360, 100, Content.Load<Texture2D>("newGame"), true, "titleMenu");
             spriteBatch.Draw(newButton.texture, new Vector2(newButton.xPosition, newButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(newButton);
+            ClickableElements.AddButton(newButton);
 
             ClickableElements.Button playButton = new ClickableElements.Button("load", 1363, 407, 360, 100, Content.Load<Texture2D>("load"), true, "titleMenu");
             spriteBatch.Draw(playButton.texture, new Vector2(playButton.xPosition, playButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(playButton);
+            ClickableElements.AddButton(playButton);
 
             ClickableElements.Button galleryButton = new ClickableElements.Button("gallery", 1363, 574, 360, 100, Content.Load<Texture2D>("gallery"), true, "titleMenu");
             spriteBatch.Draw(galleryButton.texture, new Vector2(galleryButton.xPosition, galleryButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(galleryButton);
+            ClickableElements.AddButton(galleryButton);
 
             ClickableElements.Button optionsButton = new ClickableElements.Button("options", 1363, 741, 360, 100, Content.Load<Texture2D>("settings"), true, "titleMenu");
             spriteBatch.Draw(optionsButton.texture, new Vector2(optionsButton.xPosition, optionsButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(optionsButton);
+            ClickableElements.AddButton(optionsButton);
 
             if (fadeIn >= 0)
             {
@@ -241,17 +242,16 @@ namespace Lament
 
             ClickableElements.Button basicOptionsButton = new ClickableElements.Button("basicOptions", 810, 400, 360, 100, Content.Load<Texture2D>("options"), true, "pauseMenu");
             spriteBatch.Draw(basicOptionsButton.texture, new Vector2(basicOptionsButton.xPosition, basicOptionsButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(basicOptionsButton);
+            ClickableElements.AddButton(basicOptionsButton);
 
             ClickableElements.Button exitButton = new ClickableElements.Button("exit", 810, 567, 360, 100, Content.Load<Texture2D>("exit"), true, "pauseMenu");
             spriteBatch.Draw(exitButton.texture, new Vector2(exitButton.xPosition, exitButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(exitButton);
+            ClickableElements.AddButton(exitButton);
         }
 
         /* Draws the basic options menu available from the game. */
         public void DrawBasicOptionsMenu()
         {
-            ClickableElements.RemoveFromMenu("titleScreen");
 
             Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
             Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("basicOptions").Width / 2, Content.Load<Texture2D>("basicOptions").Height / 2);
@@ -259,11 +259,11 @@ namespace Lament
 
             ClickableElements.Button fullscreenButton = new ClickableElements.Button("fullscreenToggle", 216, 238, 151, 134, Content.Load<Texture2D>("toggle"), true, "basicOptionsMenu");
             spriteBatch.Draw(fullscreenButton.texture, new Vector2(fullscreenButton.xPosition, fullscreenButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(fullscreenButton);
+            ClickableElements.AddButton(fullscreenButton);
 
             ClickableElements.Button windowButton = new ClickableElements.Button("windowToggle", 586, 238, 151, 134, Content.Load<Texture2D>("toggle"), true, "basicOptionsMenu");
             spriteBatch.Draw(windowButton.texture, new Vector2(windowButton.xPosition, windowButton.yPosition), Color.White);
-            ClickableElements.buttonsOnScreen.Add(windowButton);
+            ClickableElements.AddButton(windowButton);
 
             if (graphics.IsFullScreen == true)
             {
@@ -274,9 +274,13 @@ namespace Lament
                 spriteBatch.Draw(Content.Load<Texture2D>("windowMolby"), new Vector2(586, 188), null, Color.White);
             }
 
+            ClickableElements.Button masterVolume = new ClickableElements.Button("masterVolume", 1067, 249, 685, 86, Content.Load<Texture2D>("slider"), true, "basicOptionsMenu");
+            spriteBatch.Draw(masterVolume.texture, new Vector2(masterVolume.xPosition, masterVolume.yPosition), ClickableElements.masterVolumeSourceRectangle, Color.White);
+            ClickableElements.AddButton(masterVolume);
+
         }
 
-        /* Draws the advanced options meny available from the title screen. */
+        /* Draws the advanced options menu available from the title screen. */
         public void DrawAdvancedOptionsMenu()
         {
             if (fadeOut <= 1)

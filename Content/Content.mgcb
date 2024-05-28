@@ -13,6 +13,16 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin babydoll.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:babydoll.spritefont
+
+#begin BabyDoll.ttf
+/copy:BabyDoll.ttf
+
 #begin basicOptions.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -57,13 +67,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:exit.png
-
-#begin font.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:font.spritefont
 
 #begin gallery.png
 /importer:TextureImporter

@@ -3,13 +3,16 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using System.Collections;
-using System.Text.RegularExpressions;
 
 namespace Lament
 {
     public class ClickableElements
     {
+        /* A list of all of the buttons on the screen. */
         public static ArrayList buttonsOnScreen = new ArrayList();
+
+        /* Source rectangles for the sliders on the basic options menu. */
+        public static Rectangle masterVolumeSourceRectangle = new Rectangle(0, 0, 685, 86);
 
         public struct Button
         {
@@ -20,7 +23,6 @@ namespace Lament
             public int yPosition { get; set; }
             public Texture2D texture { get; set; }
             public bool onScreen { get; set; }
-
             public string menu { get; set; }
 
             public Button(string key, int xPosition, int yPosition, int width, int height, Texture2D texture, bool onScreen, string menu)
@@ -36,6 +38,7 @@ namespace Lament
             }
         }
 
+        /* Determines whether there is a cursor inside of a button. */
         public static bool CursorInButton(Button button)
         {
             if ((StartGame.mouseState.X < button.xPosition + button.width) && (StartGame.mouseState.X > button.xPosition))
@@ -49,6 +52,7 @@ namespace Lament
             return false;
         }
 
+        /* Updates what buttons are shown on the screen based on the current game state. */
         public static void Update(GameTime gameTime, Button button)
         {
             if ((CursorInButton(button) == true) && (StartGame.mouseState.LeftButton == ButtonState.Pressed) && (StartGame.previousMouseState.LeftButton == ButtonState.Released))
@@ -56,12 +60,15 @@ namespace Lament
                 switch (StartGame.gameState)
                 {
                     case "titleScreen":
+                        buttonsOnScreen.Clear();
                         TitleScreenButtons(button);
                         break;
                     case "pauseMenu":
+                        buttonsOnScreen.Clear();
                         PauseMenuButtons(button);
                         break;
                     case "basicOptionsMenu":
+                        buttonsOnScreen.Clear();
                         BasicOptionsMenuButtons(button);
                         break;
                 }
@@ -88,7 +95,7 @@ namespace Lament
             }
         }
 
-        /* Triggers if a button on the options menu was pressed. */
+        /* Triggers if a button on the pause menu was pressed. */
         public static void PauseMenuButtons(Button button)
         {
             if (button.key == "basicOptions")
@@ -102,6 +109,7 @@ namespace Lament
             }
         }
 
+        /* Triggers if a button on the basic options menu, the one accessible at any point in the game, was pressed. */
         public static void BasicOptionsMenuButtons(Button button)
         {
             if (button.key == "windowToggle")
@@ -112,17 +120,42 @@ namespace Lament
             } else if (button.key == "fullscreenToggle") {
                 StartGame.graphics.IsFullScreen = false;
                 StartGame.graphics.ToggleFullScreen();
+
+            } else if (button.key == "masterVolume")
+            {
+                MediaPlayer.Volume = System.Math.Clamp(((float)(StartGame.mouseState.X - button.xPosition) / button.width), 0.0f, 1.0f);
+                masterVolumeSourceRectangle = new Rectangle(0, 0, (StartGame.mouseState.X - button.xPosition), button.height);
             }
         }
 
+        /* Removes a button from the array of buttons on the screen. */
         public static void RemoveFromMenu(string menu)
         {
-            foreach (Button button in buttonsOnScreen)
+            foreach (Button button in buttonsOnScreen.ToArray())
             {
                 if (button.menu == menu)
                 {
                     buttonsOnScreen.Remove(button);
                 }
+            }
+        }
+
+        /* Adds a button to the list of buttons on the screen as long as it has not already been added. */
+        public static void AddButton(Button button)
+        {
+            bool added = false;
+
+            foreach (Button element in buttonsOnScreen.ToArray())
+            {
+                if (element.key == button.key)
+                {
+                    added = true;
+                }
+            }
+
+            if (added == false)
+            {
+                buttonsOnScreen.Add(button);
             }
         }
     }
