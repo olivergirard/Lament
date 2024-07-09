@@ -11,13 +11,23 @@ namespace Lament
     {
         public static GraphicsDeviceManager graphics;
         public static string gameState;
+
         public static SpriteBatch spriteBatch;
         public static SpriteFont spriteFont;
         public static ContentManager content;
+
+        public static RenderTarget2D previousRenderTarget;
+        public static RenderTarget2D renderTarget;
+
         public static Song music;
         Effect blur;
 
         public static SaveAndLoad.SaveData save;
+
+        public static Texture2D captureForEffect = null;
+
+        public static int windowWidth;
+        public static int windowHeight;
 
         float fadeIn = 1;
         float fadeOut = 0;
@@ -26,14 +36,15 @@ namespace Lament
         public static MouseState mouseState;
         public static MouseState previousMouseState;
 
-        public static Texture2D capture = null;
-
         /* Runs at execution. */
         public StartGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = windowWidth;
+            graphics.PreferredBackBufferHeight = windowHeight;
             graphics.IsFullScreen = true;
 
             Content.RootDirectory = "Content";
@@ -53,6 +64,8 @@ namespace Lament
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            renderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
+            previousRenderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
             blur = Content.Load<Effect>("blur");
             spriteFont = Content.Load<SpriteFont>("babydoll");
         }
@@ -79,6 +92,8 @@ namespace Lament
         /* Master draw function. */
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(renderTarget);
+
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp);
 
             /* Depending on the state of the game, different functions will be called. */
@@ -101,20 +116,22 @@ namespace Lament
                     break;
 
                 case "pauseMenu":
-                    if (capture == null)
+                    /* Prevents the screen from blurring infinitely. */
+                    if (captureForEffect == null)
                     {
-                        capture = CaptureScreen();
+                        captureForEffect = BlurScreen();
                     }
-                    spriteBatch.Draw(capture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                    spriteBatch.Draw(captureForEffect, Vector2.Zero, Color.White);
                     DrawPauseMenu();
                     break;
 
                 case "basicOptionsMenu":
-                    if (capture == null)
+                    /* Prevents the screen from blurring infinitely. */
+                    if (captureForEffect == null)
                     {
-                        capture = CaptureScreen();
+                        captureForEffect = BlurScreen();
                     }
-                    spriteBatch.Draw(capture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                    spriteBatch.Draw(captureForEffect, Vector2.Zero, Color.White);
                     DrawBasicOptionsMenu();
                     break;
 
@@ -128,6 +145,18 @@ namespace Lament
             }
 
             spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(previousRenderTarget);
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget, new Rectangle(0, 0, windowWidth, windowHeight), Color.White);
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
 
@@ -169,7 +198,7 @@ namespace Lament
                     break;
             }
 
-            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(Content.Load<Texture2D>(titleScreenName), Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             ClickableElements.Button newButton = new ClickableElements.Button("new", 1363, 240, 360, 100, Content.Load<Texture2D>("newGame"), true, "titleMenu");
             spriteBatch.Draw(newButton.texture, new Vector2(newButton.xPosition, newButton.yPosition), Color.White);
@@ -190,45 +219,42 @@ namespace Lament
             if (fadeIn >= 0)
             {
                 fadeIn -= 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeIn);
             }
         }
 
         /* Captures the last outputted image on the screen and applies a blur effect to it. */
-        public Texture2D CaptureScreen()
+        public Texture2D BlurScreen()
         {
-            int w = GraphicsDevice.PresentationParameters.BackBufferWidth;
-            int h = GraphicsDevice.PresentationParameters.BackBufferHeight;
+            int w = previousRenderTarget.Width;
+            int h = previousRenderTarget.Height;
 
-            int[] backBuffer = new int[w * h];
-            GraphicsDevice.GetBackBufferData(backBuffer);
+            Texture2D sourceTexture = new Texture2D(GraphicsDevice, w, h);
+            sourceTexture = previousRenderTarget;
 
-            Texture2D sourceTexture = new Texture2D(GraphicsDevice, w, h, false, GraphicsDevice.PresentationParameters.BackBufferFormat);
-            sourceTexture.SetData(backBuffer);
-
-            RenderTarget2D renderTarget1 = new RenderTarget2D(GraphicsDevice, sourceTexture.Width, sourceTexture.Height);
-            RenderTarget2D renderTarget2 = new RenderTarget2D(GraphicsDevice, sourceTexture.Width, sourceTexture.Height);
+            RenderTarget2D renderTarget1 = new RenderTarget2D(GraphicsDevice, w, h);
+            RenderTarget2D renderTarget2 = new RenderTarget2D(GraphicsDevice, w, h);
 
             GraphicsDevice.SetRenderTarget(renderTarget1);
             GraphicsDevice.Clear(Color.Transparent);
 
-            blur.Parameters["pixelSize"].SetValue(new Vector2(1.0f / sourceTexture.Width, 0));
+            blur.Parameters["pixelSize"].SetValue(new Vector2(1.0f / w, 0));
             blur.CurrentTechnique.Passes[0].Apply();
             spriteBatch.Draw(sourceTexture, Vector2.Zero, Color.White);
 
             GraphicsDevice.SetRenderTarget(renderTarget2);
             GraphicsDevice.Clear(Color.Transparent);
 
-            blur.Parameters["pixelSize"].SetValue(new Vector2(0, 1.0f / sourceTexture.Height));
+            blur.Parameters["pixelSize"].SetValue(new Vector2(0, 1.0f / h));
             blur.CurrentTechnique.Passes[0].Apply();
             spriteBatch.Draw(renderTarget1, Vector2.Zero, Color.White);
 
-            GraphicsDevice.SetRenderTarget(null);
-
-            Texture2D blurredTexture = new Texture2D(GraphicsDevice, sourceTexture.Width, sourceTexture.Height);
-            Color[] pixels = new Color[sourceTexture.Width * sourceTexture.Height];
+            Texture2D blurredTexture = new Texture2D(GraphicsDevice, w, h);
+            Color[] pixels = new Color[w * h];
             renderTarget2.GetData(pixels);
             blurredTexture.SetData(pixels);
+
+            GraphicsDevice.SetRenderTarget(renderTarget);
 
             return blurredTexture;
         }
@@ -286,7 +312,8 @@ namespace Lament
             if (fadeOut <= 1)
             {
                 fadeOut += 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeOut);
+                spriteBatch.Draw(previousRenderTarget, Vector2.Zero, Color.White);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeOut);
                 fadeIn = 1.0f;
             }
             else
@@ -296,7 +323,7 @@ namespace Lament
                 spriteBatch.Draw(Content.Load<Texture2D>("yokoTitle"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
 
                 fadeIn -= 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeIn);
             }
         }
 
@@ -306,7 +333,8 @@ namespace Lament
             if (fadeOut <= 1)
             {
                 fadeOut += 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeOut);
+                spriteBatch.Draw(previousRenderTarget, Vector2.Zero, Color.White);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeOut);
                 fadeIn = 1.0f;
             } else
             {
@@ -315,7 +343,7 @@ namespace Lament
                 spriteBatch.Draw(Content.Load<Texture2D>("morrisTitle"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
 
                 fadeIn -= 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeIn);
             }
         }
 
@@ -325,7 +353,8 @@ namespace Lament
             if (fadeOut <= 1)
             {
                 fadeOut += 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeOut);
+                spriteBatch.Draw(previousRenderTarget, Vector2.Zero, Color.White);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeOut);
                 fadeIn = 1.0f;
             }
             else
@@ -335,7 +364,7 @@ namespace Lament
                 spriteBatch.Draw(Content.Load<Texture2D>("rubyTitle"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
 
                 fadeIn -= 0.01f;
-                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), new Vector2(0, 0), Color.White * fadeIn);
+                spriteBatch.Draw(Content.Load<Texture2D>("blackFade"), Vector2.Zero, Color.White * fadeIn);
             }
         }
 

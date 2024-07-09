@@ -33,7 +33,6 @@ namespace Lament
             }
 
             string line = dialogueData.dialogue[lineNumber].text;
-            System.Diagnostics.Debug.WriteLine(line);
 
             StartGame.spriteBatch.DrawString(StartGame.spriteFont, line, new Vector2(100, 100), Color.Black);
         }

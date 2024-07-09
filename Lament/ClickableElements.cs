@@ -8,6 +8,9 @@ namespace Lament
 {
     public class ClickableElements
     {
+        public static int mouseX;
+        public static int mouseY;
+
         /* A list of all of the buttons on the screen. */
         public static ArrayList buttonsOnScreen = new ArrayList();
 
@@ -41,16 +44,20 @@ namespace Lament
         /* Determines whether there is a cursor inside of a button. */
         public static bool CursorInButton(Button button)
         {
-            if ((StartGame.mouseState.X < button.xPosition + button.width) && (StartGame.mouseState.X > button.xPosition))
+            float scaleX = (float)StartGame.windowWidth / GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            float scaleY = (float)StartGame.windowHeight / GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            mouseX = (int)(StartGame.mouseState.X / scaleX);
+            mouseY = (int)(StartGame.mouseState.Y / scaleY);
+
+            if ((mouseX >= button.xPosition) && (mouseX < button.xPosition + button.width) && (mouseY >= button.yPosition) && (mouseY < button.yPosition + button.height))
             {
-                if ((StartGame.mouseState.Y < button.yPosition + button.height) && (StartGame.mouseState.Y > button.yPosition))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
         }
+
 
         /* Updates what buttons are shown on the screen based on the current game state. */
         public static void Update(GameTime gameTime, Button button)
@@ -101,7 +108,9 @@ namespace Lament
             if (button.key == "basicOptions")
             {
                 StartGame.gameState = "basicOptionsMenu";
-                StartGame.capture = null;
+
+                /* Resetting the potential for an effect, such as a fade or a blur.*/
+                StartGame.captureForEffect = null;
             }
             else if (button.key == "exit")
             {
@@ -114,17 +123,28 @@ namespace Lament
         {
             if (button.key == "windowToggle")
             {
-                StartGame.graphics.IsFullScreen = true;
-                StartGame.graphics.ToggleFullScreen();
+                StartGame.graphics.IsFullScreen = false;
+                StartGame.windowWidth = 1280;
+                StartGame.windowHeight = 720;
+                StartGame.graphics.PreferredBackBufferWidth = StartGame.windowWidth;
+                StartGame.graphics.PreferredBackBufferHeight = StartGame.windowHeight;
+
+                StartGame.graphics.ApplyChanges();
 
             } else if (button.key == "fullscreenToggle") {
-                StartGame.graphics.IsFullScreen = false;
-                StartGame.graphics.ToggleFullScreen();
+
+                StartGame.graphics.IsFullScreen = true;
+                StartGame.windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                StartGame.windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                StartGame.graphics.PreferredBackBufferWidth = StartGame.windowWidth;
+                StartGame.graphics.PreferredBackBufferHeight = StartGame.windowHeight;
+
+                StartGame.graphics.ApplyChanges();
 
             } else if (button.key == "masterVolume")
             {
-                MediaPlayer.Volume = System.Math.Clamp(((float)(StartGame.mouseState.X - button.xPosition) / button.width), 0.0f, 1.0f);
-                masterVolumeSourceRectangle = new Rectangle(0, 0, (StartGame.mouseState.X - button.xPosition), button.height);
+                MediaPlayer.Volume = System.Math.Clamp(((float)(mouseX - button.xPosition) / button.width), 0.0f, 1.0f);
+                masterVolumeSourceRectangle = new Rectangle(0, 0, (mouseX - button.xPosition), button.height);
             }
         }
 
