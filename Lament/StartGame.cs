@@ -41,11 +41,20 @@ namespace Lament
         {
             graphics = new GraphicsDeviceManager(this);
 
+            /*
             windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             graphics.PreferredBackBufferWidth = windowWidth;
             graphics.PreferredBackBufferHeight = windowHeight;
             graphics.IsFullScreen = true;
+            */
+
+            windowWidth = 1280;
+            windowHeight = 720;
+            graphics.PreferredBackBufferWidth = windowWidth;
+            graphics.PreferredBackBufferHeight = windowHeight;
+            graphics.IsFullScreen = false;
+
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -278,7 +287,6 @@ namespace Lament
         /* Draws the basic options menu available from the game. */
         public void DrawBasicOptionsMenu()
         {
-
             Vector2 screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Bounds.Width / 2, graphics.GraphicsDevice.Viewport.Bounds.Height / 2);
             Vector2 textureCenter = new Vector2(Content.Load<Texture2D>("basicOptions").Width / 2, Content.Load<Texture2D>("basicOptions").Height / 2);
             spriteBatch.Draw(Content.Load<Texture2D>("basicOptions"), screenCenter, null, Color.White, 0f, textureCenter, 1.0f, SpriteEffects.None, 0);
@@ -300,9 +308,17 @@ namespace Lament
                 spriteBatch.Draw(Content.Load<Texture2D>("windowMolby"), new Vector2(586, 188), null, Color.White);
             }
 
-            ClickableElements.Button masterVolume = new ClickableElements.Button("masterVolume", 1067, 249, 685, 86, Content.Load<Texture2D>("slider"), true, "basicOptionsMenu");
+            ClickableElements.Button masterVolume = new ClickableElements.Button("masterVolume", 1065, 249, 685, 86, Content.Load<Texture2D>("slider"), true, "basicOptionsMenu");
             spriteBatch.Draw(masterVolume.texture, new Vector2(masterVolume.xPosition, masterVolume.yPosition), ClickableElements.masterVolumeSourceRectangle, Color.White);
             ClickableElements.AddButton(masterVolume);
+
+            ClickableElements.Button textSpeed = new ClickableElements.Button("textSpeed", 143, 662, 685, 86, Content.Load<Texture2D>("slider"), true, "basicOptionsMenu");
+            spriteBatch.Draw(textSpeed.texture, new Vector2(textSpeed.xPosition, textSpeed.yPosition), ClickableElements.textSpeedSourceRectangle, Color.White);
+            ClickableElements.AddButton(textSpeed);
+
+            ClickableElements.Button textOpacity = new ClickableElements.Button("textOpacity", 143, 840, 685, 86, Content.Load<Texture2D>("slider"), true, "basicOptionsMenu");
+            spriteBatch.Draw(textOpacity.texture, new Vector2(textOpacity.xPosition, textOpacity.yPosition), ClickableElements.textOpacitySourceRectangle, Color.White);
+            ClickableElements.AddButton(textOpacity);
 
         }
 

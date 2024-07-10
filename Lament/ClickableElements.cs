@@ -16,6 +16,8 @@ namespace Lament
 
         /* Source rectangles for the sliders on the basic options menu. */
         public static Rectangle masterVolumeSourceRectangle = new Rectangle(0, 0, 685, 86);
+        public static Rectangle textSpeedSourceRectangle = new Rectangle(0, 0, 685, 86);
+        public static Rectangle textOpacitySourceRectangle = new Rectangle(0, 0, 685, 86);
 
         public struct Button
         {
@@ -145,6 +147,14 @@ namespace Lament
             {
                 MediaPlayer.Volume = System.Math.Clamp(((float)(mouseX - button.xPosition) / button.width), 0.0f, 1.0f);
                 masterVolumeSourceRectangle = new Rectangle(0, 0, (mouseX - button.xPosition), button.height);
+            } else if (button.key == "textSpeed")
+            {
+                //TODO add toggle for text speed
+                textSpeedSourceRectangle = new Rectangle(0, 0, (mouseX - button.xPosition), button.height);
+            } else if (button.key == "textOpacity")
+            {
+                //TODO add toggle for text window opacity
+                textOpacitySourceRectangle = new Rectangle(0, 0, (mouseX - button.xPosition), button.height);
             }
         }
 
